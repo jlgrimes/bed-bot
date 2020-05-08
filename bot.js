@@ -32,5 +32,25 @@ client.on('message', msg => {
                     msg.reply(reply)
                 })
         }
+
+        if (cmd === 'addrole') {
+            let name = args.join(' ');
+            msg.guild.roles.fetch()
+                .then(roles => {
+                    let role = roles.cache.filter(role => role.name === name)
+
+                    if (role.size === 0) {
+                        msg.reply("No roles named " + name)
+                    }
+
+                    // msg.member is the member who sent the function
+                    let member = msg.member;
+
+                    member.roles.add(role)
+                        .catch((err) => msg.reply(err))
+                        .then(() => msg.reply("Role added!"));
+                });
+            //member.addRole(role).catch(console.error);
+        }
      }
 });
