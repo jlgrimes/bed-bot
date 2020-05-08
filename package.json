@@ -1,0 +1,17 @@
+{
+    "name": "bed-bot",
+    "version": "1.0.0",
+    "description": "bw bot for purpzuki",
+    "main": "bot.js",
+    "scripts": {
+        "start": "node bot.js"
+    },
+    "author": "Jared Grimes",
+    "dependencies": {
+        "discord.io": "^2.5.3",
+        "discord.js": "^12.1.1",
+        "dotenv": "^8.2.0",
+        "node-fetch": "^2.6.0",
+        "winston": "^3.2.1"
+    }
+}
