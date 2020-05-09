@@ -3,6 +3,7 @@ require('dotenv').config();
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fetch = require('node-fetch');
+const servRoles = require('./roles')
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -10,7 +11,11 @@ client.on('ready', () => {
 client.login(process.env.DISCORD_TOKEN);
 
 const apiBase = 'http://api.hivemc.com/v1/';
-const bwStatsUrl = (name) => apiBase + 'player/' + name + '/BED'
+const bwStatsUrl = (name) => apiBase + 'player/' + name + '/BED';
+
+// data is what is returned from bw api
+const winRate = (data) => data.victories / data.games_played;
+const kd = (data) => data.kills / data.deaths;
 
 client.on('message', msg => {
     let message = msg.content;
@@ -24,11 +29,9 @@ client.on('message', msg => {
             fetch(bwStatsUrl(name))
                 .then(response => response.json())
                 .then(data => {
-                    const winRate = Number.parseFloat(data.victories / data.games_played * 100).toFixed(2);
-                    const kd = Number.parseFloat(data.kills / data.deaths).toFixed(2);
 
-                    const reply = 'Win rate: ' + winRate + '\n'
-                                + 'KD: ' + kd;
+                    const reply = 'Win rate: ' + winRate(data) + '\n'
+                                + 'KD: ' + kd(data);
                     msg.reply(reply)
                 })
         }
@@ -40,7 +43,7 @@ client.on('message', msg => {
                     let role = roles.cache.filter(role => role.name === name)
 
                     if (role.size === 0) {
-                        msg.reply("No roles named " + name)
+                        msg.reply('No roles named ' + name)
                     }
 
                     // msg.member is the member who sent the function
@@ -48,9 +51,53 @@ client.on('message', msg => {
 
                     member.roles.add(role)
                         .catch((err) => msg.reply(err))
-                        .then(() => msg.reply("Role added!"));
+                        .then(() => msg.reply('Role added!'));
                 });
             //member.addRole(role).catch(console.error);
+        }
+
+        if (cmd === 'stats-update') {
+            if (args.length !== 2) {
+                msg.reply('Usage: !stats-update [mentioned user] [ign]')
+                return;
+            }
+            let mention = args[0]
+                .replace('<@', '')
+                .replace('>', '')
+                .replace('!', '');
+            let ign = args[1];
+
+            fetch(bwStatsUrl(ign))
+                .then((response) => response.json())
+                .then(data => {
+                    msg.guild.roles.fetch()
+                        .then(roles => {
+                            let servKdRole = servRoles.kd.filter(kdRole => kdRole.range(kd(data)))
+                            let servKdRoleName = servKdRole[0].name
+
+                            let kdRole = roles.cache.filter(role => role.name === servKdRoleName)
+                            if (kdRole.size === 0) {
+                                msg.reply('No roles named ' + name)
+                                return;
+                            }
+
+                            let servWrRole = servRoles.wr.filter(wrRole => wrRole.range(winRate(data)))
+                            let servWrRoleName = servWrRole[0].name
+
+                            let wrRole = roles.cache.filter(role => role.name === servWrRoleName)
+                            if (wrRole.size === 0) {
+                                msg.reply('No roles named ' + name)
+                                return;
+                            }
+        
+                            msg.guild.members.fetch(mention)
+                                .then((member) => {
+                                    member.roles.add(wrRole, kdRole)
+                                        .catch((err) => msg.reply(err))
+                                        .then(() => msg.reply('Roles added!'));
+                                })
+                        });
+                })
         }
      }
 });
