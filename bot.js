@@ -80,6 +80,7 @@ client.on('message', msg => {
                                 msg.reply('No roles named ' + name)
                                 return;
                             }
+                            kdRole = kdRole.values().next().value
 
                             let servWrRole = servRoles.wr.filter(wrRole => wrRole.range(winRate(data)))
                             let servWrRoleName = servWrRole[0].name
@@ -89,12 +90,14 @@ client.on('message', msg => {
                                 msg.reply('No roles named ' + name)
                                 return;
                             }
+                            wrRole = wrRole.values().next().value
         
                             msg.guild.members.fetch(mention)
                                 .then((member) => {
-                                    member.roles.add(wrRole, kdRole)
-                                        .catch((err) => msg.reply(err))
-                                        .then(() => msg.reply('Roles added!'));
+                                    member.roles.add([wrRole, kdRole])
+                                        .catch((err) => console.log(err))
+                                        .then(() => msg.reply('Roles added!'))
+                                    
                                 })
                         });
                 })
