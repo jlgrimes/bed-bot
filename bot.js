@@ -79,17 +79,23 @@ client.on('message', msg => {
         args = args.splice(1);
 
         if (cmd === 'set-ign') {
-            if (args.length !== 2) {
-                msg.reply('Usage: !set-ign [mentioned user] [ign]')
+            if (msg.channel.name !== 'ign') {
+                msg.reply('Must be in #ign to set-ign');
                 return;
             }
+
+            if (args.length !== 2) {
+                msg.reply('Usage: !set-ign [mentioned user] [ign]');
+                return;
+            }
+
             storage.setItem(args[0], args[1])
-                .then(() =>  msg.reply(args[0] + ', ' + args[1] + ' stored!'))
+                .then(() =>  msg.reply(args[0] + ', ' + args[1] + ' stored!'));
         }
 
         if (cmd === 'get-ign') {
             storage.getItem(args[0])
-                .then(item => console.log(item))
+                .then(item => console.log(item));
         }
 
         if (cmd === 'remove-ign') {
