@@ -8,46 +8,70 @@ Open the following link and add it to the server:
 
 https://discordapp.com/oauth2/authorize?&client_id=708170445878198293&scope=bot&permissions=8
 
+## Cron Job
+
+The currently implemented cron job runs `!update` once every day at 12 AM EST. This ensures that everyone's stats are up to date with Hive at the beginning of every day.
+
 ## User Commands
 
 * `[ign]` refers to your in-game-name for Minecraft
 
-#### `!ign [ign]`
+#### `!set [ign]`
 
-Sets your ign to `[ign]` in the database. To be used in the channel `#set-ign`.
+*In progress*
+
+Sets your ign to `[ign]` in the database. Can only be used in the channel `#set-ign`.
+
+Once run, the user gets the following message:
+
+```
+Welcome to the server, user!
+
+Your stats currently are:
+20% WR
+3.77 KD
+
+Roles set!
+```
+
+The bot then adds the roles using `!update [mentioned user]`.
 
 #### `!stats [ign]`
+
+*In progress*
 
 Pulls up the stats of any player.
 
 ## Admin Commands
 
-* `[mentioned user]` refers to the user mentioned in Discord, for example **@j_lancelott**
+* `[mentioned user]` refers to the user mentioned in Discord, for example **`@j_lancelott`**
 
-#### `!stats-update-all`
+#### `!update-all`
+
+*In progress*
 
 Updates all of the roles for all players in the database.
 
-#### `!set-ign [mentioned user] [ign]`
+#### `!update [mentioned user]`
+
+*In progress*
+
+Updates the roles for a specific user. Assumes that the user is in the database, else throws an error.
+
+#### `!add [mentioned user] [ign]`
 
 Adds the ign of the mentioned user to the database.
 
-#### `!remove-ign [mentioned user]`
+#### `!remove [mentioned user]`
+
+*Currently broken*
 
 Removes the mentioned user from the database.
 
-#### `!list-ign`
+#### `!list`
 
 Lists all the key, value (user, ign) pairs of the database.
 
-### Additional Admin Commands
-
-These aren't that important but might come in handy.
-
-#### `!stats-update [mentioned user]`
-
-Updates the roles for `[mentioned user]`.
-
-#### `!wipe-ign`
+#### `!wipe`
 
 Wipes the database. Please do not use this if not needed.
