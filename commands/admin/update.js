@@ -2,9 +2,7 @@ const { Command } = require('discord.js-commando');
 const storage = require('node-persist');
 const fetch = require('node-fetch');
 const servRoles = require('../../roles')
-
-const apiBase = 'http://api.hivemc.com/v1/';
-const bwStatsUrl = (name) => apiBase + 'player/' + name + '/BED';
+const api = require('../../api')
 
 // data is what is returned from bw api
 const winRate = (data) => data.victories / data.games_played;
@@ -34,7 +32,7 @@ module.exports = class RolesUpdateCommand extends Command {
     addServRoles (mentionId, ign, message) {
         const guild = this.client.guilds.cache.first();
 
-        fetch(bwStatsUrl(ign))
+        fetch(api.bwStatsUrl(ign))
         .then((response) => response.json())
         .then(data => {
             guild.roles.fetch()
