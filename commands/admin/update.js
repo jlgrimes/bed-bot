@@ -67,7 +67,7 @@ module.exports = class RolesUpdateCommand extends Command {
                                 .catch((err) => message.reply('remove: ' + err + '\ntry to removed:' + allServRoleNames.reduce((s, t) => s + t)))
                                 .then(() => {
                                     member.roles.add([wrRole, kdRole])
-                                        .catch((err) => console.log(err))
+                                        .catch((err) => message.reply(err))
                                         .then(() => log(message, 'Roles ' + servWrRoleName + ' and ' + servKdRoleName + ' added for ' + member.user.username + '!'))
                                 })         
                         })
