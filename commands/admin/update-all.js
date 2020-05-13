@@ -25,7 +25,7 @@ module.exports = class UpdateAllCommand extends Command {
             let mention = trimMention(datum.key);
             let ign = datum.value;
 
-            const u = new update(client)
+            const u = new update(this.client)
             u.addServRoles(mention, ign, message)
         });
 	}
