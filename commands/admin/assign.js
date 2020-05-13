@@ -1,13 +1,12 @@
 const { Command } = require('discord.js-commando');
 const storage = require('node-persist');
 
-module.exports = class DatabaseSetCommand extends Command {
+module.exports = class AssignCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'db-set',
+			name: 'assign',
 			group: 'admin',
-            memberName: 'db-set',
-            aliases: ['db-add', 'add'],
+            memberName: 'assign',
             description: 'Assigns a user to an in game name.',
             userPermissions: ['ADMINISTRATOR'],
 			args: [
