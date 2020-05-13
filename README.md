@@ -4,7 +4,7 @@ Bot for Holli's Bed Wars server. Built with NodeJS + love <3
 
 ## Cron Job
 
-The currently implemented cron job runs `!update` once every **hour**. This ensures that everyone's stats are up to date with Hive all the time.
+The currently implemented cron job runs `!update-all` once every **hour**. This ensures that everyone's stats are up to date with Hive all the time.
 
 ## User Commands
 
