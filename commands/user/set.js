@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const storage = require('node-persist');
 
-const update = require('./update')
+const update = require('../admin/update')
 
 module.exports = class SetCommand extends Command {
 	constructor(client) {
