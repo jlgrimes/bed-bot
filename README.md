@@ -1,6 +1,6 @@
 # bed bot
 
-Bot for Holli's Bed Wars server. Built with love and NodeJS.
+Bot for Holli's Bed Wars server. Built with NodeJS + love <3
 
 ## Cron Job
 
