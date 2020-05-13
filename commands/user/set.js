@@ -1,6 +1,8 @@
 const { Command } = require('discord.js-commando');
 const storage = require('node-persist');
 
+const update = require('./update')
+
 module.exports = class SetCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -28,10 +30,16 @@ module.exports = class SetCommand extends Command {
         console.log(message.member)
 
         storage.setItem(message.member.id, ign)
-            .then(() =>  message.reply(
-				'\n' +
-				'Welcome to fuck it, bw server, ' + ign + '!\n' +
-				'*Your in game name has been successfully registered.*'
-			));
+            .then(() =>  {
+				message.reply(
+					'\n' +
+					'Welcome to fuck it, bw server, ' + ign + '!\n' +
+					'*Your in game name has been successfully registered.*'
+				)
+
+				const u = new update(client)
+				u.addServRoles(message.member.id, ign, message)
+			}
+		);
 	}
 };

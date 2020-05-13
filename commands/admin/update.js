@@ -8,11 +8,6 @@ const api = require('../../api')
 const winRate = (data) => data.victories / data.games_played;
 const kd = (data) => data.kills / data.deaths;
 
-const trimMention = (mention) => mention
-    .replace('<@', '')
-    .replace('>', '')
-    .replace('!', '');
-
 const log = (message, text) => message ? message.reply(text) : console.log(text);
 
 module.exports = class UpdateCommand extends Command {

@@ -21,6 +21,8 @@ Welcome to fuck it, bw server, demathderp!
 Your in game name has been successfully registered.
 ```
 
+The bot then runs `!update [mentioned user]` (mentioned user being the current user who sent the message) to update their roles accordingly.
+
 #### `!stats [ign]`
 
 Pulls up the stats of any player.
