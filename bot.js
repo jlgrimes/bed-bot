@@ -27,7 +27,7 @@ client.on('ready', () => {
     storage.init();
 
     // every day at midnight
-    let job = schedule.scheduleJob('0 0 * * *', () => {
+    let job = schedule.scheduleJob('0 * * * *', () => {
         const u = new update(client)
         u.run()
     });
