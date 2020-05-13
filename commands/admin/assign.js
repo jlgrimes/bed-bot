@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const storage = require('node-persist');
 
-module.exports = class AssignCommand extends Command {
+module.exports = class DatabaseAssignCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'assign',

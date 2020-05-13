@@ -6,7 +6,7 @@ const storage = require('node-persist');
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 
-const update = require('./commands/admin/update')
+const updateAll = require('./commands/admin/update-all')
 
 const client = new CommandoClient({
     commandPrefix: '!',
@@ -28,7 +28,7 @@ client.on('ready', () => {
 
     // every day at midnight
     let job = schedule.scheduleJob('0 * * * *', () => {
-        const u = new update(client)
+        const u = new updateAll(client)
         u.run()
     });
 

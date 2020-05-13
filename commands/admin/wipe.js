@@ -4,12 +4,11 @@ const storage = require('node-persist');
 module.exports = class DatabaseWipeCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'db-wipe',
+			name: 'wipe',
 			group: 'admin',
-			memberName: 'db-wipe',
+			memberName: 'wipe',
             description: 'Wipes the database.',
             userPermissions: ['ADMINISTRATOR'],
-            aliases: ['wipe', 'clear', 'db-clear'],
 			args: [
 			],
 		});

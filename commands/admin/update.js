@@ -15,17 +15,21 @@ const trimMention = (mention) => mention
 
 const log = (message, text) => message ? message.reply(text) : console.log(text);
 
-module.exports = class RolesUpdateCommand extends Command {
+module.exports = class UpdateCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'roles-update',
+			name: 'update',
 			group: 'admin',
-            memberName: 'roles-update',
-            aliases: ['update'],
-            description: 'Updates all roles with users and igns in the database.',
+            memberName: 'update',
+            description: 'Updates a users\' roles with their in-game stats.',
             userPermissions: ['ADMINISTRATOR'],
 			args: [
-			],
+                {
+					key: 'mentioned',
+					prompt: 'Mention a user',
+					type: 'user',
+				}
+			]
 		});
     }
 
@@ -75,11 +79,10 @@ module.exports = class RolesUpdateCommand extends Command {
         })
     }
 
-	run(message) {
-        storage.forEach(async (datum) => {
-            let mention = trimMention(datum.key);
-            let ign = datum.value;
-            this.addServRoles(mention, ign, message);
-        });
+	run(message, { mentioned }) {
+        console.log(mentioned)
+        let mention = mentioned.id
+        storage.getItem(mention)
+            .then(ign => this.addServRoles(mention, ign, message))
 	}
 };

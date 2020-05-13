@@ -5,7 +5,6 @@ module.exports = class SetCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'set',
-			aliases: ['set-ign', 'ign'],
 			group: 'user',
 			memberName: 'set',
 			description: 'Assigns yourself an in game name.',
