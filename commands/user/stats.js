@@ -33,12 +33,12 @@ module.exports = class DatabaseWipeCommand extends Command {
                 message.reply(
                     '\n' +
                     'Stats for ' + ign + ':\n' +
-                    'Total Points:\t' + totalPoints + '\n' +
-                    'Win Rate:\t' + wr + '%\n' +
-                    'KD:\t' + kd + '\n' +
-                    'Beds Destroyed:\t' + bedsDestroyed + '\n' +
-                    'Teams Eliminated:\t' + teamsEliminated + '\n' +
-                    'Win Streak:\t' + winStreak
+                    'Total Points:\t**' + totalPoints + '**\n' +
+                    'Win Rate:\t**' + wr + '%**\n' +
+                    'KD:\t**' + kd + '**\n' +
+                    'Beds Destroyed:\t**' + bedsDestroyed + '**\n' +
+                    'Teams Eliminated:\t**' + teamsEliminated + '**\n' +
+                    'Win Streak:\t**' + winStreak + '**'
                 )
             })
 	}
