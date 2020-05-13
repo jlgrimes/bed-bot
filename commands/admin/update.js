@@ -30,7 +30,7 @@ module.exports = class RolesUpdateCommand extends Command {
     }
 
     addServRoles (mentionId, ign, message) {
-        const guild = this.client.guilds.cache.first();
+        const guild = message.guild
 
         fetch(api.bwStatsUrl(ign))
         .then((response) => response.json())
@@ -61,7 +61,10 @@ module.exports = class RolesUpdateCommand extends Command {
                         .then((member) => {
                             const allServRoleNames = [...servRoles.kd.map(role => role.name), ...servRoles.wr.map(role => role.name)];
                             const allServRoles = roles.cache.filter(role => allServRoleNames.includes(role.name))
+                            console.log(allServRoles)
+                            // console.log(member)
                             member.roles.remove(allServRoles)
+                                .catch((err) => message.reply('remove: ' + err + '\ntry to removed:' + allServRoleNames.reduce((s, t) => s + t)))
                                 .then(() => {
                                     member.roles.add([wrRole, kdRole])
                                         .catch((err) => console.log(err))
