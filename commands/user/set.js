@@ -29,6 +29,10 @@ module.exports = class SetCommand extends Command {
         console.log(message.member)
 
         storage.setItem(message.member.id, ign)
-            .then(() =>  message.reply('In game name set to ' + ign + '!'));
+            .then(() =>  message.reply(
+				'\n' +
+				'Welcome to fuck it, bw server, ' + ign + '!\n' +
+				'*Your in game name has been successfully registered.*'
+			));
 	}
 };
