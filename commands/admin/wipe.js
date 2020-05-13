@@ -16,6 +16,7 @@ module.exports = class DatabaseWipeCommand extends Command {
 	}
 
 	run(message) {
-        storage.clear().then(() => message.reply('Database cleared!'));
+		message.reply('nono... dont use this')
+        // storage.clear().then(() => message.reply('Database cleared!'));
 	}
 };
