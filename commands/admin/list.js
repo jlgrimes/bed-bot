@@ -1,12 +1,12 @@
 const { Command } = require('discord.js-commando');
-const storage = require('node-persist');
+const listAllUsers = require('../../db/listAllUsers')
 
 module.exports = class DatabaseListCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'db-list',
+			name: 'list',
 			group: 'admin',
-            memberName: 'db-list',
+            memberName: 'list',
             aliases: ['list'],
             description: 'Lists all users in the database.',
             userPermissions: ['ADMINISTRATOR'],
@@ -16,8 +16,6 @@ module.exports = class DatabaseListCommand extends Command {
 	}
 
 	run(message) {
-        storage.forEach(async (datum) => {
-            message.reply(datum.key + ", " + datum.value)
-        });
+        listAllUsers.run(message)
 	}
 };

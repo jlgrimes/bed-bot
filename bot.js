@@ -9,14 +9,14 @@ const path = require('path');
 const updateAll = require('./commands/admin/update-all')
 
 const client = new CommandoClient({
-    commandPrefix: '!',
+    commandPrefix: (process.env.VERSION === 'dev' ? '?' : '!') ,
     owner: '265515383773986817'
 })
 
 client.registry
     .registerDefaultTypes()
     .registerGroups([
-        ['admin', 'Admin'],
+        ['admin', 'Administrator'],
         ['user', 'User']
     ])
     .registerDefaultGroups()

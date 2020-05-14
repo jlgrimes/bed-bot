@@ -1,11 +1,14 @@
 const { Command } = require('discord.js-commando');
-const storage = require('node-persist');
 const update = require('./update')
 
-const trimMention = (mention) => mention
-    .replace('<@', '')
-    .replace('>', '')
-    .replace('!', '');
+const { Pool } = require('pg');
+
+const pool = new Pool({
+	connectionString: process.env.DATABASE_URL,
+	ssl: {
+	  rejectUnauthorized: false
+	}
+});
 
 module.exports = class UpdateAllCommand extends Command {
 	constructor(client) {
@@ -21,12 +24,21 @@ module.exports = class UpdateAllCommand extends Command {
     }
 
 	run(message) {
-        storage.forEach(async (datum) => {
-            let mention = trimMention(datum.key);
-            let ign = datum.value;
+        const query = `
+        SELECT * FROM users;
+        `
+        
+        pool.connect()
+            .then(client => 
+                client.query(query, (err, res) => {
+                    if (err) throw err;
 
-            const u = new update(this.client)
-            u.addServRoles(mention, ign, message)
-        });
+                    console.log(res.rows)
+                    for (let row of res.rows) {
+                        const u = new update(this.client)
+                        u.addServRoles(row.username, row.ign, message)
+                    }
+                })
+            )
 	}
 };

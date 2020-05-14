@@ -1,14 +1,27 @@
 const { Command } = require('discord.js-commando');
-const storage = require('node-persist');
 const fetch = require('node-fetch');
 const servRoles = require('../../roles')
 const api = require('../../api')
+
+const { Pool } = require('pg');
+
+const pool = new Pool({
+	connectionString: process.env.DATABASE_URL,
+	ssl: {
+	  rejectUnauthorized: false
+	}
+});
 
 // data is what is returned from bw api
 const winRate = (data) => data.victories / data.games_played;
 const kd = (data) => data.kills / data.deaths;
 
 const log = (message, text) => message ? message.reply(text) : console.log(text);
+
+const trimMention = (mention) => mention
+    .replace('<@', '')
+    .replace('>', '')
+    .replace('!', '');
 
 module.exports = class UpdateCommand extends Command {
 	constructor(client) {
@@ -29,6 +42,7 @@ module.exports = class UpdateCommand extends Command {
     }
 
     addServRoles (mentionId, ign, message) {
+        mentionId = trimMention(mentionId)
         const guild = message.guild
 
         fetch(api.bwStatsUrl(ign))
@@ -60,7 +74,7 @@ module.exports = class UpdateCommand extends Command {
                         .then((member) => {
                             const allServRoleNames = [...servRoles.kd.map(role => role.name), ...servRoles.wr.map(role => role.name)];
                             const allServRoles = roles.cache.filter(role => allServRoleNames.includes(role.name))
-                            console.log(allServRoles)
+                            // console.log(allServRoles)
                             // console.log(member)
                             member.roles.remove(allServRoles)
                                 .catch((err) => message.reply('remove: ' + err + '\ntry to removed:' + allServRoleNames.reduce((s, t) => s + t)))
@@ -77,7 +91,20 @@ module.exports = class UpdateCommand extends Command {
 	run(message, { mentioned }) {
         console.log(mentioned)
         let mention = mentioned.id
-        storage.getItem(mention)
-            .then(ign => this.addServRoles(mention, ign, message))
+
+        const query = `
+        SELECT username, ign FROM users WHERE username = '<@${mention}>';
+        `
+        
+        pool.connect()
+            .then(client => 
+                client.query(query, (err, res) => {
+                    if (err) throw err;
+                    console.log(res)
+                    const ign = res.rows[0].ign
+                    this.addServRoles(mention, ign, message)
+                  }
+                )
+            )
 	}
 };

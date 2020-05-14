@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 const { Command } = require('discord.js-commando');
-const storage = require('node-persist');
+const addUser = require('../../db/addUser')
 
 module.exports = class DatabaseAssignCommand extends Command {
 	constructor(client) {
@@ -25,7 +27,6 @@ module.exports = class DatabaseAssignCommand extends Command {
 	}
 
 	run(message, { mentioned, ign }) {
-        storage.setItem(mentioned.id, ign)
-            .then(() =>  message.reply(mentioned.username + ' in game name set to ' + ign + '!'));
+		addUser.run(message, mentioned, ign)
 	}
 };
