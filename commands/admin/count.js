@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const countAllUsers = require('../../db/countAllUsers')
+const countAllUsers = require('../../db/modules/countAllUsers')
 
 module.exports = class DatabaseCountCommand extends Command {
 	constructor(client) {

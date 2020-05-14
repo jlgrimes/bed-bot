@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { Command } = require('discord.js-commando');
-const addUser = require('../../db/addUser')
+const addUser = require('../../db/modules/addUser')
 
 module.exports = class DatabaseAssignCommand extends Command {
 	constructor(client) {
