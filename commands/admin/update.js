@@ -16,7 +16,7 @@ const pool = new Pool({
 const winRate = (data) => data.victories / data.games_played;
 const kd = (data) => data.kills / data.deaths;
 
-const log = (message, text) => message ? message.reply(text) : console.log(text);
+const log = (message, text) => message ? message.member.send(text) : console.log(text);
 
 const trimMention = (mention) => mention
     .replace('<@', '')
@@ -77,10 +77,10 @@ module.exports = class UpdateCommand extends Command {
                             // console.log(allServRoles)
                             // console.log(member)
                             member.roles.remove(allServRoles)
-                                .catch((err) => message.reply('remove: ' + err + '\ntry to removed:' + allServRoleNames.reduce((s, t) => s + t)))
+                                .catch((err) => log(message, 'remove: ' + err + '\ntry to removed:' + allServRoleNames.reduce((s, t) => s + t)))
                                 .then(() => {
                                     member.roles.add([wrRole, kdRole])
-                                        .catch((err) => message.reply(err))
+                                        .catch((err) => log(message, err))
                                         .then(() => log(message, 'Roles ' + servWrRoleName + ' and ' + servKdRoleName + ' added for ' + member.user.username + '!'))
                                 })         
                         })
