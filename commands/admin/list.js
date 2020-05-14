@@ -7,7 +7,6 @@ module.exports = class DatabaseListCommand extends Command {
 			name: 'list',
 			group: 'admin',
             memberName: 'list',
-            aliases: ['list'],
             description: 'Lists all users in the database.',
             userPermissions: ['ADMINISTRATOR'],
 			args: [
