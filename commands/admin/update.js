@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { Command } = require('discord.js-commando');
 const fetch = require('node-fetch');
 const servRoles = require('../../roles')
@@ -43,7 +45,7 @@ module.exports = class UpdateCommand extends Command {
 
     addServRoles (mentionId, ign, message) {
         mentionId = trimMention(mentionId)
-        const guild = message.guild
+        const guild = this.client.guilds.resolve(process.env.SERVER_ID)
 
         fetch(api.bwStatsUrl(ign))
         .then((response) => response.json())

@@ -1,6 +1,5 @@
 const { Command } = require('discord.js-commando');
 const update = require('./update')
-
 const { Pool } = require('pg');
 
 const pool = new Pool({
