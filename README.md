@@ -2,10 +2,6 @@
 
 Bot for Holli's Bed Wars server. Built with NodeJS + love <3
 
-## Cron Job
-
-The currently implemented cron job runs `!update-all` once every **hour**. This ensures that everyone's stats are up to date with Hive all the time.
-
 ## User Commands
 
 * `[ign]` refers to your in-game-name for Minecraft
@@ -22,6 +18,10 @@ Your in game name has been successfully registered.
 ```
 
 The bot then runs `!update [mentioned user]` (mentioned user being the current user who sent the message) to update their roles accordingly.
+
+#### `!refresh`
+
+Refreshes your roles in the server. Requires that you have run `!set`.
 
 #### `!stats [ign]`
 
@@ -45,4 +45,23 @@ Assign the mentioned user to their in game name.
 
 #### `!list`
 
-Lists all the key, value (user, ign) pairs of the database.
+Lists all the users in the database.
+
+## Cron Job
+
+*currently broken help*
+
+The currently implemented cron job runs `!update-all` once every **hour**. This ensures that everyone's stats are up to date with Hive all the time.
+
+## Database
+
+The database used is Postgres deployed on Heroku. The database has the following schema:
+
+```
+TABLE users (
+    username varchar(255),
+    ign varchar(255)
+)
+```
+
+where `username` is the user's Discord username, and `ign` is their Minecraft in game name.

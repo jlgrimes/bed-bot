@@ -25,7 +25,8 @@ module.exports = {
                     for (let row of res.rows) {
                         reply += row.username + ' ' + row.ign + '\n'
                     }
-                    message.reply(reply)
+
+                    message.member.send(reply)
 
                     client.end();
                   }
