@@ -49,7 +49,7 @@ module.exports = class DatabaseWipeCommand extends Command {
                     'Teams Eliminated:\t**' + teamsEliminated + '**\n' +
                     'Win Streak:\t**' + winStreak + '**'
                 
-                if (selfCheck) {
+                if (selfCheck && message.channel.type !== 'dm') {
                     message.member.send(reply)
                 }
                 else {
@@ -63,8 +63,9 @@ module.exports = class DatabaseWipeCommand extends Command {
             this.getStats(message, ign)
         }
         else {
+            console.log("STATS")
             const fetchUserQuery = `
-            SELECT * FROM users WHERE username='<@${message.member.id}>'
+            SELECT * FROM users WHERE username='<@${message.author.id}>'
             `
     
             pool.connect()

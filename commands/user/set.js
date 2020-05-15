@@ -22,14 +22,7 @@ module.exports = class SetCommand extends Command {
 	}
 
 	run(message, { ign }) {
-        if (message.channel.name !== 'ign') {
-            message.reply('Must be in #ign to run');
-            return;
-        }
-
-		console.log(message.member)
-		
-		addUser.run(message, '<@' + message.member.id + '>', ign)
+		addUser.run(message, '<@' + message.author.id + '>', ign)
 		message.reply(
 			'\n' +
 			'Welcome to fuck it, bw server, ' + ign + '!\n' +
@@ -37,6 +30,6 @@ module.exports = class SetCommand extends Command {
 		)
 
 		const u = new update(this.client)
-		u.addServRoles(message.member.id, ign, message)
+		u.addServRoles(message.author.id, ign, message)
 	}
 };

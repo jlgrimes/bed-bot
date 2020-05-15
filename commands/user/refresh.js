@@ -24,16 +24,19 @@ module.exports = class SetCommand extends Command {
 	}
 
 	run(message) {
+		if (message.channel.type === 'dm') {
+			message.reply('Must run this command in the server.')
+			return
+		}
         const fetchUserQuery = `
-		SELECT * FROM users WHERE username='<@${message.member.id}>'
+		SELECT * FROM users WHERE username='<@${message.author.id}>'
 		`
         pool.connect()
             .then(client =>
                 client.query(fetchUserQuery)
                     .then(res => {
                         const u = new update(this.client)
-                        console.log(message.member.id)
-                        u.addServRoles(message.member.id, res.rows[0].ign, message)
+                        u.addServRoles(message.author.id, res.rows[0].ign, message)
                     })
             )
 	}
