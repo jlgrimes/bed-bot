@@ -38,7 +38,7 @@ module.exports = class DatabaseWipeCommand extends Command {
                 const reply = '\n' +
                     'Stats for ' + ign + ':\n' +
                     'Points:\t**' + data.points + '**\n' +
-                    'Last Login:\t**' + data.lastLogin.toLocaleString() + '**\n' +
+                    'Last Login:\t**' + data.lastLogin.toLocaleString('en-US', { timeZoneName: 'short' }) + '**\n' +
                     'Victories:\t**' + data.victories + '**\n' +
                     'Games Played:\t**' + data.gamesPlayed + '**\n' +
                     'Win Rate:\t**' + wr + '%**\n' +
