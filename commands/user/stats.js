@@ -3,6 +3,7 @@ const fetch = require('node-fetch')
 const api = require('../../api')
 const { Pool } = require('pg');
 
+
 const pool = new Pool({
 	connectionString: process.env.DATABASE_URL,
 	ssl: {
@@ -29,25 +30,25 @@ module.exports = class DatabaseWipeCommand extends Command {
     }
     
     getStats(message, ign, selfCheck=false) {
-        fetch(api.bwStatsUrl(ign))
-            .then(response => response.json())
+        api.getStats(ign)
             .then(data => {
-                let totalPoints = data.total_points
-                let wr = (100 * data.victories / data.games_played).toFixed(3)
+                let wr = (100 * data.victories / data.gamesPlayed).toFixed(3)
                 let kd = (data.kills / data.deaths).toFixed(3)
-                let bedsDestroyed = data.beds_destroyed
-                let teamsEliminated = data.teams_eliminated
-                let winStreak = data.win_streak
-                
 
                 const reply = '\n' +
                     'Stats for ' + ign + ':\n' +
-                    'Total Points:\t**' + totalPoints + '**\n' +
+                    'Points:\t**' + data.points + '**\n' +
+                    'Last Login:\t**' + data.lastLogin.toLocaleString() + '**\n' +
+                    'Victories:\t**' + data.victories + '**\n' +
+                    'Games Played:\t**' + data.gamesPlayed + '**\n' +
                     'Win Rate:\t**' + wr + '%**\n' +
+                    'Kills:\t**' + data.kills + '**\n' +
+                    'Deaths:\t**' + data.deaths + '**\n' +
                     'KD:\t**' + kd + '**\n' +
-                    'Beds Destroyed:\t**' + bedsDestroyed + '**\n' +
-                    'Teams Eliminated:\t**' + teamsEliminated + '**\n' +
-                    'Win Streak:\t**' + winStreak + '**'
+                    'Beds Destroyed:\t**' + data.bedsDestroyed + '**\n' +
+                    'Teams Eliminated:\t**' + data.teamsEliminated + '**\n' +
+                    'Win Streak:\t**' + data.winStreak + '**\n' +
+                    'Title:\t**' + data.title + '**'
                 
                 if (selfCheck && message.channel.type !== 'dm') {
                     message.member.send(reply)
@@ -63,7 +64,6 @@ module.exports = class DatabaseWipeCommand extends Command {
             this.getStats(message, ign)
         }
         else {
-            console.log("STATS")
             const fetchUserQuery = `
             SELECT * FROM users WHERE username='<@${message.author.id}>'
             `

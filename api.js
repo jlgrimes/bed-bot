@@ -1,5 +1,8 @@
-const apiBase = 'http://api.hivemc.com/v1/';
+const hive = require('hive-api');
 
 module.exports = {
-    bwStatsUrl: (name) => apiBase + 'player/' + name + '/BED'
+    getStats: (ign) => {
+        let player = new hive.Player(ign);
+        return player.gameInfo(hive.GameTypes.BED)
+    }
 }

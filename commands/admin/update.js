@@ -15,7 +15,7 @@ const pool = new Pool({
 });
 
 // data is what is returned from bw api
-const winRate = (data) => data.victories / data.games_played;
+const winRate = (data) => data.victories / data.gamesPlayed;
 const kd = (data) => data.kills / data.deaths;
 
 const log = (message, text) => message ? message.member.send(text) : console.log(text);
@@ -47,8 +47,7 @@ module.exports = class UpdateCommand extends Command {
         mentionId = trimMention(mentionId)
         const guild = this.client.guilds.resolve(process.env.SERVER_ID)
 
-        fetch(api.bwStatsUrl(ign))
-        .then((response) => response.json())
+        api.getStats(ign)
         .then(data => {
             guild.roles.fetch()
                 .then(roles => {
