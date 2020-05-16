@@ -26,7 +26,12 @@ module.exports = {
                         reply += row.username + ' ' + row.ign + '\n'
                     }
 
-                    message.member.send(reply)
+                    if (message.channel.type !== 'dm') {
+                        message.member.send(reply)
+                    }
+                    else {
+                        message.reply(reply)
+                    }
 
                     client.end();
                   }
