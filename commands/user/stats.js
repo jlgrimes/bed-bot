@@ -37,8 +37,8 @@ module.exports = class DatabaseWipeCommand extends Command {
 		});
     }
     
-    getStats(message, ign, mode, selfCheck=false) {
-        api.getStats(ign)
+    getStats(message, ign, mode) {
+        api.getStats(ign, mode)
             .then(data => {
                 // if the user never logged in, aka they're invalid
                 if (!data.firstLogin) {
@@ -68,14 +68,22 @@ module.exports = class DatabaseWipeCommand extends Command {
     }
 
 	run(message, { mode, ign }) {
-        // if both game mode and ign are specified
-        if (mode && ign) {
-            this.getStats(message, ign, mode)
-        }
-        else if (mode) {
-            if (gameModes.filter(gm => gm === mode).length > 0) {
-                
+        let selfCheck = false;
+
+        if (!ign) {
+            // if only argument provided is actually ign and not mode
+            if (gameModes.filter(gm => gm === mode).length === 0) {
+                ign = mode;
+                mode = null;
             }
+            else {
+                selfCheck = true;
+            }
+        }
+
+
+        if (selfCheck) {
+            this.getStats(message, ign, mode)
         }
         else {
             const fetchUserQuery = `
@@ -86,7 +94,7 @@ module.exports = class DatabaseWipeCommand extends Command {
                 .then(client =>
                     client.query(fetchUserQuery)
                         .then(res => {
-                            this.getStats(message, res.rows[0].ign, true)
+                            this.getStats(message, res.rows[0].ign, mode)
                         })
                 )
         }
