@@ -49,8 +49,16 @@ module.exports = class DatabaseWipeCommand extends Command {
                 let wr = (100 * data.victories / data.gamesPlayed).toFixed(3)
                 let kd = (data.kills / data.deaths).toFixed(3)
 
-                const reply = '\n' +
-                    'Stats for ' + ign + ':\n' +
+                let reply = '\n';
+
+                if (mode) {
+                    reply += mode[0].toUpperCase() + mode.slice(1) + ' s'
+                }
+                else {
+                    reply += 'S'
+                }
+
+                reply += 'tats for ' + ign + ':\n' +
                     'Points:\t**' + data.points + '**\n' +
                     'Last Login:\t**' + data.lastLogin.toLocaleString('en-US', { timeZoneName: 'short' }) + '**\n' +
                     'Victories:\t**' + data.victories + '**\n' +
@@ -61,8 +69,11 @@ module.exports = class DatabaseWipeCommand extends Command {
                     'KD:\t**' + kd + '**\n' +
                     'Beds Destroyed:\t**' + data.bedsDestroyed + '**\n' +
                     'Teams Eliminated:\t**' + data.teamsEliminated + '**\n' +
-                    'Win Streak:\t**' + data.winStreak + '**\n' +
-                    'Title:\t**' + data.title + '**'
+                    'Win Streak:\t**' + data.winStreak + '**\n'
+
+                if (!mode) {
+                    reply += 'Title:\t**' + data.title + '**'
+                }
                 
                 message.reply(reply)
             })
@@ -84,9 +95,6 @@ module.exports = class DatabaseWipeCommand extends Command {
 
 
         if (selfCheck) {
-            this.getStats(message, ign, mode)
-        }
-        else {
             const fetchUserQuery = `
             SELECT * FROM users WHERE username='<@${message.author.id}>'
             `
@@ -98,6 +106,9 @@ module.exports = class DatabaseWipeCommand extends Command {
                             this.getStats(message, res.rows[0].ign, mode)
                         })
                 )
+        }
+        else {
+            this.getStats(message, ign, mode)
         }
 	}
 };
