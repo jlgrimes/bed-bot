@@ -21,7 +21,7 @@ module.exports = {
                     if (err) throw err;
 
                     let reply = ''
-                    console.log(res.rows)
+                    // console.log(res.rows)
                     for (let row of res.rows) {
                         reply += row.username + ' ' + row.ign + '\n'
                     }
