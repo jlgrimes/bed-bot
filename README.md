@@ -4,48 +4,109 @@ Bot for Holli's Bed Wars server. Built with NodeJS + love <3
 
 ## User Commands
 
-* `[ign]` refers to your in-game-name for Minecraft
+* **[ign]** refers to your in-game-name for Minecraft
 
-#### `!set [ign]`
+### !set [ign]
 
-Sets your ign to `[ign]` in the database. Can only be used in the channel `#set-ign`.
-
-Once run, the user gets the following message:
+Sets your ign to **[ign]** in the database.
 
 ```
-Welcome to fuck it, bw server, demathderp!
+!set [ign]
+```
+```
+Welcome to fuck it, bw server, [ign]!
 Your in game name has been successfully registered.
 ```
 
-The bot then runs `!update [mentioned user]` (mentioned user being the current user who sent the message) to update their roles accordingly.
+The bot then runs **!update [mentioned user]** (mentioned user being the current user who sent the message) to update their roles accordingly.
 
-#### `!refresh`
+### !refresh
 
 Refreshes your roles in the server. Requires that you have run `!set`.
 
-#### `!stats [ign]`
+```
+!refresh
+```
+
+*Runs admin command **!update [your ign]`***
+
+### !stats [mode] [ign]
 
 Pulls up the stats of any player.
 
+```
+!stats SitOnMeYoshiko
+```
+```
+Stats for SitOnMeYoshiko:
+Points:    48720
+Last Login:    5/17/2020, 3:40:44 PM UTC
+Victories:    104
+Games Played:    304
+Win Rate:    34.211%
+Kills:    1017
+Deaths:    958
+KD:    1.062
+Beds Destroyed:    120
+Teams Eliminated:    115
+Win Streak:    6
+Title:    Dreamer 5
+```
+
+### !compare [ign 1] [ign 2]
+
+*Upcoming*
+
+Compares the stats of any two players.
+
 ## Admin Commands
 
-* `[mentioned user]` refers to the user mentioned in Discord, for example **`@j_lancelott`**
+* **[mentioned user]** refers to the user mentioned in Discord, for example **@j_lancelott**
 
-#### `!update-all`
+### !update-all
 
 Updates all of the roles for all players in the database.
 
-#### `!update [mentioned user]`
+```
+update-all
+```
+
+*Runs **!update [user]** for all users in the database.*
+
+### !update [mentioned user]
 
 Updates the roles for a specific user. Assumes that the user is in the database, else throws an error.
 
-#### `!assign [mentioned user] [ign]`
+```
+!update [mentioned user]
+```
+```
+Roles [kd role] and [wr role] added for [mentioned user ign]
+```
+
+### !assign [mentioned user] [ign]
 
 Assign the mentioned user to their in game name.
 
-#### `!list`
+```
+!assign [mentioned user] [ign]
+```
+```
+Roles [kd role] and [wr role] added for [mentioned user ign]
+```
+
+### !list
 
 Lists all the users in the database.
+
+```
+!list
+```
+```
+@j_lancelott SitOnMeYoshiko
+@Purpzuki HolliDoesntSit
+...
+```
 
 ## Cron Job
 
