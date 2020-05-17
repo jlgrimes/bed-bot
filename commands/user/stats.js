@@ -11,6 +11,8 @@ const pool = new Pool({
 	}
 });
 
+const gameModes = ['solo', 'solos', 'duo', 'duos', 'team', 'teams']
+
 module.exports = class DatabaseWipeCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -20,16 +22,22 @@ module.exports = class DatabaseWipeCommand extends Command {
             description: 'Displays stats for a player.',
 			args: [
                 {
+					key: 'mode',
+					prompt: 'Game mode of bed wars (solo, duo, teams)',
+                    type: 'string',
+                    default: ''
+				},
+                {
 					key: 'ign',
 					prompt: 'The in game name of the user',
                     type: 'string',
                     default: ''
-				},
+                },
 			],
 		});
     }
     
-    getStats(message, ign, selfCheck=false) {
+    getStats(message, ign, mode, selfCheck=false) {
         api.getStats(ign)
             .then(data => {
                 let wr = (100 * data.victories / data.gamesPlayed).toFixed(3)
@@ -54,9 +62,15 @@ module.exports = class DatabaseWipeCommand extends Command {
             })
     }
 
-	run(message, { ign }) {
-        if (ign) {
-            this.getStats(message, ign)
+	run(message, { mode, ign }) {
+        // if both game mode and ign are specified
+        if (mode && ign) {
+            this.getStats(message, ign, mode)
+        }
+        else if (mode) {
+            if (gameModes.filter(gm => gm === mode).length > 0) {
+                
+            }
         }
         else {
             const fetchUserQuery = `
