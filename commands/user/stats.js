@@ -38,7 +38,8 @@ module.exports = class DatabaseWipeCommand extends Command {
     }
     
     getStats(message, ign, mode, selfCheck=false) {
-        api.getStats(ign)
+        api.getStats(ign, mode)
+            .catch(err => console.log(err))
             .then(data => {
                 // if the user never logged in, aka they're invalid
                 if (!data.firstLogin) {
