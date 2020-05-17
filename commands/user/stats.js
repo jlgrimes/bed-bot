@@ -32,6 +32,11 @@ module.exports = class DatabaseWipeCommand extends Command {
     getStats(message, ign, selfCheck=false) {
         api.getStats(ign)
             .then(data => {
+                // if the user never logged in, aka they're invalid
+                if (!data.firstLogin) {
+                    message.reply('Player ' + ign + ' does not exist.')
+                    return
+                }
                 let wr = (100 * data.victories / data.gamesPlayed).toFixed(3)
                 let kd = (data.kills / data.deaths).toFixed(3)
 
