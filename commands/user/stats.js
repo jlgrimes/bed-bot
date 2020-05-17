@@ -50,12 +50,7 @@ module.exports = class DatabaseWipeCommand extends Command {
                     'Win Streak:\t**' + data.winStreak + '**\n' +
                     'Title:\t**' + data.title + '**'
                 
-                if (selfCheck && message.channel.type !== 'dm') {
-                    message.member.send(reply)
-                }
-                else {
-                    message.reply(reply)
-                }
+                message.reply(reply)
             })
     }
 
