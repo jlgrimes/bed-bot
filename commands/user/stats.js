@@ -52,7 +52,7 @@ module.exports = class DatabaseWipeCommand extends Command {
                 let reply = '\n';
 
                 if (mode) {
-                    reply += mode[0].toUpperCase() + mode.slice(1) + ' s'
+                    reply += '**' + mode[0].toUpperCase() + mode.slice(1) + '** s'
                 }
                 else {
                     reply += 'S'
@@ -82,12 +82,18 @@ module.exports = class DatabaseWipeCommand extends Command {
 	run(message, { mode, ign }) {
         let selfCheck = false;
 
+        // if ign is not provided (there is only 1 argument)
         if (!ign) {
+            // if no arguments are provided
+            if (!mode) {
+                selfCheck = true;
+            }
             // if only argument provided is actually ign and not mode
-            if (gameModes.filter(gm => gm === mode).length === 0) {
+            else if (gameModes.filter(gm => gm === mode).length === 0) {
                 ign = mode;
                 mode = null;
             }
+            // if the only argument provided actually is a mode
             else {
                 selfCheck = true;
             }
