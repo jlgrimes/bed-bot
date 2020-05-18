@@ -1,6 +1,7 @@
 const { Command } = require('discord.js-commando');
 const api = require('../../api')
 const { lastLogin, wr, kd } = require('../../helpers/stats')
+const { compareLine } = require('../../helpers/print')
 
 module.exports = class CompareCommand extends Command {
 	constructor(client) {
@@ -25,24 +26,25 @@ module.exports = class CompareCommand extends Command {
     }
 
     getReply(data1, data2, ign1, ign2) {
-        const comp = (val1, val2) => `${val1 > val2 ? `>` : val1 < val2 ? `<` : `=`}`
-        const printLine = (val1, val2) => `${val1}\t${comp(val1, val2)}\t${val2}`
+        const formattedData = [
+            ['Comparing', ign1, ign2],
+            ['', '', ''],
+            ['Points:', data1.points, data2.points],
+            ['Victories:', data1.victories, data2.victories],
+            ['Games Played:', data1.gamesPlayed, data2.gamesPlayed],
+            ['Win Rate:', wr(data1), wr(data2)],
+            ['Kills:', data1.kills, data2.kills],
+            ['Deaths:', data1.deaths, data2.deaths],
+            ['KD:', kd(data1), kd(data2)],
+            ['Beds Destroyed:', data1.bedsDestroyed, data2.bedsDestroyed],
+            ['Teams Eliminated:', data1.teamsEliminated, data2.teamsEliminated],
+            ['Win Streak:', data1.winStreak, data2.winStreak],
+            ['Title:', data1.title, data2.title]
+        ]
 
         return (
 `\`\`\`
-Comparing ${ign1} against ${ign2}
-
-Points:            ${printLine(data1.points, data2.points)}
-Victories:         ${printLine(data1.victories, data2.victories)}
-Games Played:      ${printLine(data1.gamesPlayed, data2.gamesPlayed)}
-Win Rate:          ${printLine(wr(data1), wr(data2))}
-Kills:             ${printLine(data1.kills, data2.kills)}
-Deaths:            ${printLine(data1.deaths, data2.deaths)}
-KD:                ${printLine(kd(data1), kd(data2))}
-Beds Destroyed:    ${printLine(data1.bedsDestroyed, data2.bedsDestroyed)}
-Teams Eliminated:  ${printLine(data1.teamsEliminated, data2.teamsEliminated)}
-Win Streak:        ${printLine(data1.winStreak, data2.winStreak)}
-Title:             ${data1.title} vs ${data2.title}
+${formattedData.map(line => compareLine(line[0], line[1], line[2])).join('\n')}
 \`\`\``
         )
     }
