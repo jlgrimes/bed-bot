@@ -2,6 +2,7 @@ const { Command } = require('discord.js-commando');
 const api = require('../../api')
 const { Pool } = require('pg');
 const { lastLogin, wr, kd } = require('../../helpers/stats')
+const { statsLine } = require('../../helpers/print')
 
 const pool = new Pool({
 	connectionString: process.env.DATABASE_URL,
@@ -37,22 +38,29 @@ module.exports = class StatsCommand extends Command {
     }
 
     getReply(data, ign, mode) {
+        const formattedData = [
+            ['Points:', data.points],
+            ['Last Login:', lastLogin(data)],
+            ['Victories:', data.victories],
+            ['Games Played:', data.gamesPlayed],
+            ['Win Rate:', wr(data)],
+            ['Kills:', data.kills],
+            ['Deaths:', data.deaths],
+            ['KD:', kd(data)],
+            ['Beds Destroyed:', data.bedsDestroyed],
+            ['Teams Eliminated:', data.teamsEliminated],
+            ['Win Streak:', data.winStreak]
+        ]
+
+        if (!mode) {
+            formattedData.push(['Title:', data.title])
+        }
+
         return (
 `\`\`\`
 ${(mode ? `${mode[0].toUpperCase()} ${mode.slice(1)} s` : `S`)}tats for ${ign}
 
-Points:            ${data.points}
-Last Login:        ${lastLogin(data)}
-Victories:         ${data.victories}
-Games Played:      ${data.gamesPlayed}
-Win Rate:          ${kd(data)}
-Kills:             ${data.kills}
-Deaths:            ${data.deaths}
-KD:                ${wr(data)}
-Beds Destroyed:    ${data.bedsDestroyed}
-Teams Eliminated:  ${data.teamsEliminated}
-Win Streak:        ${data.winStreak}
-${!mode ? `Title:             ${data.title}` : ``}
+${formattedData.map(line => statsLine(line[0], line[1])).join('\n')}
 \`\`\``
         )
     }

@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const api = require('../../api')
+const { lastLogin, wr, kd } = require('../../helpers/stats')
 
 module.exports = class CompareCommand extends Command {
 	constructor(client) {
@@ -15,12 +16,35 @@ module.exports = class CompareCommand extends Command {
                     type: 'string'
 				},
                 {
-					key: 'ign',
+					key: 'ign2',
 					prompt: 'Second in game name',
                     type: 'string'
                 },
 			],
 		});
+    }
+
+    getReply(data1, data2, ign1, ign2) {
+        const comp = (val1, val2) => `${val1 > val2 ? `>` : val1 < val2 ? `<` : `=`}`
+        const printLine = (val1, val2) => `${val1}\t${comp(val1, val2)}\t${val2}`
+
+        return (
+`\`\`\`
+Comparing ${ign1} against ${ign2}
+
+Points:            ${printLine(data1.points, data2.points)}
+Victories:         ${printLine(data1.victories, data2.victories)}
+Games Played:      ${printLine(data1.gamesPlayed, data2.gamesPlayed)}
+Win Rate:          ${printLine(wr(data1), wr(data2))}
+Kills:             ${printLine(data1.kills, data2.kills)}
+Deaths:            ${printLine(data1.deaths, data2.deaths)}
+KD:                ${printLine(kd(data1), kd(data2))}
+Beds Destroyed:    ${printLine(data1.bedsDestroyed, data2.bedsDestroyed)}
+Teams Eliminated:  ${printLine(data1.teamsEliminated, data2.teamsEliminated)}
+Win Streak:        ${printLine(data1.winStreak, data2.winStreak)}
+Title:             ${data1.title} vs ${data2.title}
+\`\`\``
+        )
     }
     
     compare(message, ign1, ign2) {
@@ -33,9 +57,6 @@ module.exports = class CompareCommand extends Command {
                     return
                 }
 
-                let wr1 = (100 * data1.victories / data1.gamesPlayed).toFixed(3)
-                let kd1 = (data1.kills / data1.deaths).toFixed(3)
-
                 api.getStats(ign2)
                     .catch(err => console.log(err))
                     .then(data2 => {
@@ -44,37 +65,9 @@ module.exports = class CompareCommand extends Command {
                             return
                         }
 
-                        let wr2 = (100 * data2.victories / data2.gamesPlayed).toFixed(3)
-                        let kd2 = (data2.kills / data2.deaths).toFixed(3)
-
-                        let reply = '\n```';
-                        reply += `
-                        Comparing ${ign1} and ${ign2}
-                        `
+                        const reply = this.getReply(data1, data2, ign1, ign2)
+                        message.reply(reply)
                     })
-
-                reply += 'tats for ' + ign + '\n' +
-                    '\n' +
-                    'Points:           ' + data.points + '\n' +
-                    'Last Login:       ' + data.lastLogin.toLocaleString('en-US', { timeZoneName: 'short' }) + '\n' +
-                    'Victories:        ' + data.victories + '\n' +
-                    'Games Played:     ' + data.gamesPlayed + '\n' +
-                    'Win Rate:         ' + wr + '%\n' +
-                    'Kills:            ' + data.kills + '\n' +
-                    'Deaths:           ' + data.deaths + '\n' +
-                    'KD:               ' + kd + '\n' +
-                    'Beds Destroyed:   ' + data.bedsDestroyed + '\n' +
-                    'Teams Eliminated: ' + data.teamsEliminated + '\n' +
-                    'Win Streak:       ' + data.winStreak + '\n'
-
-                if (!mode) {
-                    reply += 
-                    'Title:            ' + data.title
-                }
-
-                reply += '```'
-                
-                message.reply(reply)
             })
     }
 
