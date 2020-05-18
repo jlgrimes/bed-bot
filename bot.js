@@ -4,15 +4,15 @@ const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 
 const client = new CommandoClient({
-    commandPrefix: (process.env.VERSION === 'dev' ? '?' : '!') ,
-    owner: '265515383773986817'
-})
+    commandPrefix: process.env.VERSION === 'dev' ? '?' : '!',
+    owner: '265515383773986817',
+});
 
 client.registry
     .registerDefaultTypes()
     .registerGroups([
         ['admin', 'Administrator'],
-        ['user', 'User']
+        ['user', 'User'],
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
@@ -23,6 +23,6 @@ client.on('ready', () => {
 });
 client.login(process.env.DISCORD_TOKEN);
 
-client.on('message', message => {
+client.on('message', (message) => {
     //...
 });

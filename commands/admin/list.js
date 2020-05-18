@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const listAllUsers = require('../../db/modules/listAllUsers')
 
-module.exports = class DatabaseListCommand extends Command {
+module.exports = class ListCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'list',
@@ -9,8 +9,6 @@ module.exports = class DatabaseListCommand extends Command {
             memberName: 'list',
             description: 'Lists all users in the database.',
             userPermissions: ['ADMINISTRATOR'],
-			args: [
-			],
 		});
 	}
 
