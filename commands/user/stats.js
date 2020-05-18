@@ -1,8 +1,7 @@
 const { Command } = require('discord.js-commando');
-const fetch = require('node-fetch')
 const api = require('../../api')
 const { Pool } = require('pg');
-
+const { lastLogin, wr, kd } = require('../../helpers/stats')
 
 const pool = new Pool({
 	connectionString: process.env.DATABASE_URL,
@@ -13,7 +12,7 @@ const pool = new Pool({
 
 const gameModes = ['solo', 'solos', 'duo', 'duos', 'team', 'teams']
 
-module.exports = class DatabaseWipeCommand extends Command {
+module.exports = class StatsCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'stats',
@@ -36,6 +35,27 @@ module.exports = class DatabaseWipeCommand extends Command {
 			],
 		});
     }
+
+    getReply(data, ign, mode) {
+        return (
+`\`\`\`
+${(mode ? `${mode[0].toUpperCase()} ${mode.slice(1)} s` : `S`)}tats for ${ign}
+
+Points:            ${data.points}
+Last Login:        ${lastLogin(data)}
+Victories:         ${data.victories}
+Games Played:      ${data.gamesPlayed}
+Win Rate:          ${kd(data)}
+Kills:             ${data.kills}
+Deaths:            ${data.deaths}
+KD:                ${wr(data)}
+Beds Destroyed:    ${data.bedsDestroyed}
+Teams Eliminated:  ${data.teamsEliminated}
+Win Streak:        ${data.winStreak}
+${!mode ? `Title:             ${data.title}` : ``}
+\`\`\``
+        )
+    }
     
     getStats(message, ign, mode) {
         api.getStats(ign, mode)
@@ -46,39 +66,9 @@ module.exports = class DatabaseWipeCommand extends Command {
                     message.reply('Player ' + ign + ' does not exist.')
                     return
                 }
-                let wr = (100 * data.victories / data.gamesPlayed).toFixed(3)
-                let kd = (data.kills / data.deaths).toFixed(3)
 
-                let reply = '\n```';
+                const reply = this.getReply(data, ign, mode)
 
-                if (mode) {
-                    reply += mode[0].toUpperCase() + mode.slice(1) + ' s'
-                }
-                else {
-                    reply += 'S'
-                }
-
-                reply += 'tats for ' + ign + '\n' +
-                    '\n' +
-                    'Points:           ' + data.points + '\n' +
-                    'Last Login:       ' + data.lastLogin.toLocaleString('en-US', { timeZoneName: 'short' }) + '\n' +
-                    'Victories:        ' + data.victories + '\n' +
-                    'Games Played:     ' + data.gamesPlayed + '\n' +
-                    'Win Rate:         ' + wr + '%\n' +
-                    'Kills:            ' + data.kills + '\n' +
-                    'Deaths:           ' + data.deaths + '\n' +
-                    'KD:               ' + kd + '\n' +
-                    'Beds Destroyed:   ' + data.bedsDestroyed + '\n' +
-                    'Teams Eliminated: ' + data.teamsEliminated + '\n' +
-                    'Win Streak:       ' + data.winStreak + '\n'
-
-                if (!mode) {
-                    reply += 
-                    'Title:            ' + data.title
-                }
-
-                reply += '```'
-                
                 message.reply(reply)
             })
     }
