@@ -57,7 +57,7 @@ module.exports = class StatsCommand extends Command {
         }
 
         return `\`\`\`
-${mode ? `${mode[0].toUpperCase()} ${mode.slice(1)} s` : `S`}tats for ${ign}
+${mode ? `${mode[0].toUpperCase()}${mode.slice(1)} s` : `S`}tats for ${ign}
 
 ${formattedData.map((line) => statsLine(line[0], line[1])).join('\n')}
 \`\`\``;
