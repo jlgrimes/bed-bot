@@ -55,7 +55,7 @@ ${formattedData
             .then((data1) => {
                 // if the user never logged in, aka they're invalid
                 if (!data1.firstLogin) {
-                    message.reply('Player ' + ign1 + ' does not exist.');
+                    message.reply(`Player ${ign1} does not exist.`);
                     return;
                 }
 
@@ -63,9 +63,7 @@ ${formattedData
                     .catch((err) => console.log(err))
                     .then((data2) => {
                         if (!data2.firstLogin) {
-                            message.reply(
-                                'Player ' + ign2 + ' does not exist.'
-                            );
+                            message.reply(`Player ${ign2} does not exist.`);
                             return;
                         }
 

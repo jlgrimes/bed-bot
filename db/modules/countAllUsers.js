@@ -19,7 +19,7 @@ module.exports = {
             client.query(query, (err, res) => {
                 if (err) throw err;
 
-                message.reply('There are ' + res.rows.length + ' homies');
+                message.reply(`There are ${res.rows.length} homies`);
 
                 client.end();
             })

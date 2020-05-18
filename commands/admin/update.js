@@ -68,7 +68,7 @@ module.exports = class UpdateCommand extends Command {
                     (role) => role.name === servWrRoleName
                 );
                 if (wrRole.size === 0) {
-                    log(message, 'No roles named ' + name);
+                    message.member.send(`No roles named ${name}`);
                     return;
                 }
                 wrRole = wrRole.values().next().value;
@@ -85,28 +85,21 @@ module.exports = class UpdateCommand extends Command {
                     member.roles
                         .remove(allServRoles)
                         .catch((err) =>
-                            log(
-                                message,
-                                'remove: ' +
-                                    err +
-                                    '\ntry to removed:' +
-                                    allServRoleNames.reduce((s, t) => s + t)
+                            console.log(
+                                `remove: ${err}
+                                try to removed: ${allServRoleNames.reduce(
+                                    (s, t) => s + t
+                                )}
+                                `
                             )
                         )
                         .then(() => {
                             member.roles
                                 .add([wrRole, kdRole])
-                                .catch((err) => log(message, err))
+                                .catch((err) => console.log(err))
                                 .then(() =>
-                                    log(
-                                        message,
-                                        'Roles ' +
-                                            servWrRoleName +
-                                            ' and ' +
-                                            servKdRoleName +
-                                            ' added for ' +
-                                            member.user.username +
-                                            '!'
+                                    message.member.send(
+                                        `Roles ${servWrRoleName} and ${servKdRoleName} added for ${member.user.username}`
                                     )
                                 );
                         });

@@ -69,7 +69,7 @@ ${formattedData.map((line) => statsLine(line[0], line[1])).join('\n')}
             .then((data) => {
                 // if the user never logged in, aka they're invalid
                 if (!data.firstLogin) {
-                    message.reply('Player ' + ign + ' does not exist.');
+                    message.reply(`Player ${ign} does not exist.`);
                     return;
                 }
 

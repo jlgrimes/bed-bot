@@ -23,14 +23,11 @@ module.exports = class SetCommand extends Command {
     }
 
     run(message, { ign }) {
-        addUser.run(message, '<@' + message.author.id + '>', ign);
-        message.reply(
-            '\n' +
-                'Welcome to fuck it, bw server, ' +
-                ign +
-                '!\n' +
-                '*Your in game name has been successfully registered.*'
-        );
+        addUser.run(message, `<@${message.author.id}>`, ign);
+        message.reply(`
+Welcome to fuck it bw server, ${ign}!
+*Your in game name has been successfully registered.*
+		`);
 
         const u = new update(this.client);
         u.addServRoles(message.author.id, ign, message);
