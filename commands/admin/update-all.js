@@ -17,8 +17,10 @@ module.exports = class UpdateAllCommand extends Command {
             memberName: 'update-all',
             description: 'Updates all users\' roles with their in-game stats.',
             userPermissions: ['ADMINISTRATOR'],
-			args: [
-			],
+			throttling: {
+                usages: 1,
+                duration: 60
+            }
 		});
     }
 
