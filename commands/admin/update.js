@@ -1,9 +1,8 @@
 require('dotenv').config();
 
 const { Command } = require('discord.js-commando');
-const fetch = require('node-fetch');
-const servRoles = require('../../roles')
-const api = require('../../api')
+const servRoles = require('../../constants/roles')
+const api = require('../../helpers/api')
 
 const { Pool } = require('pg');
 
@@ -75,8 +74,7 @@ module.exports = class UpdateCommand extends Command {
                         .then((member) => {
                             const allServRoleNames = [...servRoles.kd.map(role => role.name), ...servRoles.wr.map(role => role.name)];
                             const allServRoles = roles.cache.filter(role => allServRoleNames.includes(role.name))
-                            // console.log(allServRoles)
-                            // console.log(member)
+
                             member.roles.remove(allServRoles)
                                 .catch((err) => log(message, 'remove: ' + err + '\ntry to removed:' + allServRoleNames.reduce((s, t) => s + t)))
                                 .then(() => {

@@ -55,9 +55,27 @@ Title:    Dreamer 5
 
 ### !compare [ign 1] [ign 2]
 
-*Upcoming*
-
 Compares the stats of any two players.
+
+```
+!compare SitOnMeYoshiko HolliDoesntSit
+```
+
+```
+Comparing           SitOnMeYoshiko vs   HolliDoesntSit
+
+Points:             48720          <    491425
+Victories:          104            <    1197
+Games Played:       304            <    2183
+Win Rate:           34.211%        <    54.833%
+Kills:              1017           <    12463
+Deaths:             958            <    5058
+KD:                 1.062          <    2.464
+Beds Destroyed:     120            <    2833
+Teams Eliminated:   115            <    2233
+Win Streak:         6              <    13
+Title:              Dreamer 5      vs   Sandman 2
+```
 
 ## Admin Commands
 
