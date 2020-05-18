@@ -18,8 +18,7 @@ module.exports = class SetCommand extends Command {
 			group: 'user',
 			memberName: 'refresh',
 			description: 'Refreshes your stats.',
-			args: [
-			],
+			guildOnly: true
 		});
 	}
 

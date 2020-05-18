@@ -38,7 +38,8 @@ module.exports = class UpdateCommand extends Command {
 					prompt: 'Mention a user',
 					type: 'user',
 				}
-			]
+            ],
+            guildOnly: true
 		});
     }
 
@@ -47,44 +48,44 @@ module.exports = class UpdateCommand extends Command {
         const guild = this.client.guilds.resolve(process.env.SERVER_ID)
 
         api.getStats(ign)
-        .then(data => {
-            guild.roles.fetch()
-                .then(roles => {
-                    let servKdRole = servRoles.kd.filter(kdRole => kdRole.range(kd(data)))
-                    let servKdRoleName = servKdRole[0].name
-    
-                    let kdRole = roles.cache.filter(role => role.name === servKdRoleName)
-                    if (kdRole.size === 0) {
-                        log(message, 'No roles named ' + name)
-                        return;
-                    }
-                    kdRole = kdRole.values().next().value
-    
-                    let servWrRole = servRoles.wr.filter(wrRole => wrRole.range(winRate(data)))
-                    let servWrRoleName = servWrRole[0].name
-    
-                    let wrRole = roles.cache.filter(role => role.name === servWrRoleName)
-                    if (wrRole.size === 0) {
-                        log(message, 'No roles named ' + name)
-                        return;
-                    }
-                    wrRole = wrRole.values().next().value
-    
-                    guild.members.fetch(mentionId)
-                        .then((member) => {
-                            const allServRoleNames = [...servRoles.kd.map(role => role.name), ...servRoles.wr.map(role => role.name)];
-                            const allServRoles = roles.cache.filter(role => allServRoleNames.includes(role.name))
+            .then(data => {
+                guild.roles.fetch()
+                    .then(roles => {
+                        let servKdRole = servRoles.kd.filter(kdRole => kdRole.range(kd(data)))
+                        let servKdRoleName = servKdRole[0].name
+        
+                        let kdRole = roles.cache.filter(role => role.name === servKdRoleName)
+                        if (kdRole.size === 0) {
+                            log(message, 'No roles named ' + name)
+                            return;
+                        }
+                        kdRole = kdRole.values().next().value
+        
+                        let servWrRole = servRoles.wr.filter(wrRole => wrRole.range(winRate(data)))
+                        let servWrRoleName = servWrRole[0].name
+        
+                        let wrRole = roles.cache.filter(role => role.name === servWrRoleName)
+                        if (wrRole.size === 0) {
+                            log(message, 'No roles named ' + name)
+                            return;
+                        }
+                        wrRole = wrRole.values().next().value
+        
+                        guild.members.fetch(mentionId)
+                            .then((member) => {
+                                const allServRoleNames = [...servRoles.kd.map(role => role.name), ...servRoles.wr.map(role => role.name)];
+                                const allServRoles = roles.cache.filter(role => allServRoleNames.includes(role.name))
 
-                            member.roles.remove(allServRoles)
-                                .catch((err) => log(message, 'remove: ' + err + '\ntry to removed:' + allServRoleNames.reduce((s, t) => s + t)))
-                                .then(() => {
-                                    member.roles.add([wrRole, kdRole])
-                                        .catch((err) => log(message, err))
-                                        .then(() => log(message, 'Roles ' + servWrRoleName + ' and ' + servKdRoleName + ' added for ' + member.user.username + '!'))
-                                })         
-                        })
-                });
-        })
+                                member.roles.remove(allServRoles)
+                                    .catch((err) => log(message, 'remove: ' + err + '\ntry to removed:' + allServRoleNames.reduce((s, t) => s + t)))
+                                    .then(() => {
+                                        member.roles.add([wrRole, kdRole])
+                                            .catch((err) => log(message, err))
+                                            .then(() => log(message, 'Roles ' + servWrRoleName + ' and ' + servKdRoleName + ' added for ' + member.user.username + '!'))
+                                    })         
+                            })
+                    });
+            })
     }
 
 	run(message, { mentioned }) {

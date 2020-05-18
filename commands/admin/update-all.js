@@ -20,7 +20,8 @@ module.exports = class UpdateAllCommand extends Command {
 			throttling: {
                 usages: 1,
                 duration: 60
-            }
+            },
+            guildOnly: true
 		});
     }
 

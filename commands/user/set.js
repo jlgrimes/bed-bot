@@ -18,6 +18,7 @@ module.exports = class SetCommand extends Command {
 					type: 'string',
 				},
 			],
+			guildOnly: true
 		});
 	}
 
