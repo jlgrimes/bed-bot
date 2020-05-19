@@ -51,7 +51,7 @@ module.exports = class StatsCommand extends Command {
 
             const reply = await this.getReply(data, ign, mode);
 
-            message.reply(reply);
+            message.channel.send(reply);
         } catch (error) {
             console.log(error);
         }
