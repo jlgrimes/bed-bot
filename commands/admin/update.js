@@ -3,6 +3,7 @@ require('dotenv').config();
 const { Command } = require('discord.js-commando');
 const servRoles = require('../../src/constants/roles');
 const api = require('../../src/stats/api');
+const hive = require('hive-api');
 
 const { Pool } = require('pg');
 
@@ -43,7 +44,7 @@ module.exports = class UpdateCommand extends Command {
         mentionId = trimMention(mentionId);
         const guild = this.client.guilds.resolve(process.env.SERVER_ID);
 
-        api.getStats(ign).then((data) => {
+        api.getStats(ign, hive.GameTypes.BED).then((data) => {
             guild.roles.fetch().then((roles) => {
                 let servKdRole = servRoles.kd.filter((kdRole) =>
                     kdRole.range(kd(data))
