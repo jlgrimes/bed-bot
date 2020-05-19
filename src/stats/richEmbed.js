@@ -11,9 +11,9 @@ module.exports = {
 
         let description = data.title ? `${data.title}` : ``
         description += `
-        ${data.points} points
-        ${data.winStreak} win streak
-        Last logged in at ${lastLogin(data)}
+${data.points} points
+${data.winStreak} win streak
+Last logged in at ${lastLogin(data)}
         `
 
         return {
@@ -37,19 +37,19 @@ module.exports = {
                     {
                         name: 'Game Stats',
                         value: `
-                        ${data.victories} Victories
-                        ${data.gamesPlayed} Games Played
-                        ${wr(data)} Win Rate
-                        ${data.bedsDestroyed} Beds Destroyed
-                        ${data.teamsEliminated} Teams Eliminated
+${data.victories} Victories
+${data.gamesPlayed} Games Played
+${wr(data)} Win Rate
+${data.bedsDestroyed} Beds Destroyed
+${data.teamsEliminated} Teams Eliminated
                         `,
                     },
                     {
                         name: 'Player Stats',
                         value: `
-                        ${data.kills} Kills
-                        ${data.deaths} Deaths
-                        ${kd(data)} KD
+${data.kills} Kills
+${data.deaths} Deaths
+${kd(data)} KD
                         `,
                     },
                 ],
