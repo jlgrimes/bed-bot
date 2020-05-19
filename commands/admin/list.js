@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const listAllUsers = require('../../db/modules/listAllUsers')
+const listAllUsers = require('../../src/db/modules/listAllUsers')
 
 module.exports = class ListCommand extends Command {
 	constructor(client) {

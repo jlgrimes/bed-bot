@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 
 const update = require('../admin/update');
-const addUser = require('../../db/modules/addUser');
+const addUser = require('../../src/db/modules/addUser');
 
 module.exports = class SetCommand extends Command {
     constructor(client) {

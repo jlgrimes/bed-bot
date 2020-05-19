@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 const { Command } = require('discord.js-commando');
-const servRoles = require('../../constants/roles');
-const api = require('../../helpers/api');
+const servRoles = require('../../src/constants/roles');
+const api = require('../../src/stats/api');
 
 const { Pool } = require('pg');
 

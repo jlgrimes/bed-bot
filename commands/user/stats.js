@@ -1,8 +1,8 @@
 const { Command } = require('discord.js-commando');
-const api = require('../../helpers/api');
+const api = require('../../src/stats/api');
 const { Pool } = require('pg');
-const { lastLogin, wr, kd } = require('../../helpers/stats');
-const { statsLine } = require('../../helpers/print');
+const richEmbed = require('../../src/stats/richEmbed')
+const { modeEnum } = require('../../src/stats/helpers')
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -38,45 +38,23 @@ module.exports = class StatsCommand extends Command {
     }
 
     getReply(data, ign, mode) {
-        const formattedData = [
-            ['Points:', data.points],
-            ['Last Login:', lastLogin(data)],
-            ['Victories:', data.victories],
-            ['Games Played:', data.gamesPlayed],
-            ['Win Rate:', wr(data)],
-            ['Kills:', data.kills],
-            ['Deaths:', data.deaths],
-            ['KD:', kd(data)],
-            ['Beds Destroyed:', data.bedsDestroyed],
-            ['Teams Eliminated:', data.teamsEliminated],
-            ['Win Streak:', data.winStreak],
-        ];
-
-        if (!mode) {
-            formattedData.push(['Title:', data.title]);
-        }
-
-        return `\`\`\`
-${mode ? `${mode[0].toUpperCase()}${mode.slice(1)} s` : `S`}tats for ${ign}
-
-${formattedData.map((line) => statsLine(line[0], line[1])).join('\n')}
-\`\`\``;
+        return richEmbed.generate(data, ign, mode);
     }
 
-    getStats(message, ign, mode) {
-        api.getStats(ign, mode)
-            .catch((err) => console.log(err))
-            .then((data) => {
-                // if the user never logged in, aka they're invalid
-                if (!data.firstLogin) {
-                    message.reply(`Player ${ign} does not exist.`);
-                    return;
-                }
+    async getStats(message, ign, mode) {
+        try {
+            const data = await api.getStats(ign, mode);
+            if (!data.firstLogin) {
+                message.reply(`Player ${ign} does not exist.`);
+                return;
+            }
 
-                const reply = this.getReply(data, ign, mode);
+            const reply = await this.getReply(data, ign, mode);
 
-                message.reply(reply);
-            });
+            message.reply(reply);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     run(message, { mode, ign }) {
@@ -98,6 +76,8 @@ ${formattedData.map((line) => statsLine(line[0], line[1])).join('\n')}
                 selfCheck = true;
             }
         }
+
+        mode = modeEnum(mode)
 
         if (selfCheck) {
             const fetchUserQuery = `

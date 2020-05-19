@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
-const api = require('../../helpers/api');
-const { lastLogin, wr, kd } = require('../../helpers/stats');
-const { compareLine } = require('../../helpers/print');
+const api = require('../../src/stats/api');
+const { lastLogin, wr, kd } = require('../../src/stats/helpers');
+const { compareLine } = require('../../src/stats/print');
 
 module.exports = class CompareCommand extends Command {
     constructor(client) {
