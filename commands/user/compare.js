@@ -2,6 +2,7 @@ const { Command } = require('discord.js-commando');
 const api = require('../../src/stats/api');
 const { lastLogin, wr, kd } = require('../../src/stats/helpers');
 const { compareLine } = require('../../src/stats/print');
+const hive = require('hive-api');
 
 module.exports = class CompareCommand extends Command {
     constructor(client) {
@@ -50,7 +51,7 @@ ${formattedData
     }
 
     compare(message, ign1, ign2) {
-        api.getStats(ign1)
+        api.getStats(ign1, hive.GameTypes.BED)
             .catch((err) => console.log(err))
             .then((data1) => {
                 // if the user never logged in, aka they're invalid
@@ -59,7 +60,7 @@ ${formattedData
                     return;
                 }
 
-                api.getStats(ign2)
+                api.getStats(ign2, hive.GameTypes.BED)
                     .catch((err) => console.log(err))
                     .then((data2) => {
                         if (!data2.firstLogin) {
