@@ -1,6 +1,6 @@
 const moment = require('moment');
-const { lastLogin, wr, kd } = require('./helpers');
-const { getUuid, getPlayerUrl } = require('./api');
+const { lastLogin, wr, kd } = require('../stats/helpers');
+const { getUuid, getPlayerUrl } = require('../stats/api');
 const { getColor } = require('../styles/colors')
 
 const crafatarApi = (uuid) => `https://crafatar.com/avatars/${uuid}.png`;

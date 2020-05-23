@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const api = require('../../src/stats/api');
 const { Pool } = require('pg');
-const richEmbed = require('../../src/stats/richEmbed')
+const richEmbed = require('../../src/replies/stats')
 const { modeEnum } = require('../../src/stats/helpers')
 
 const pool = new Pool({
