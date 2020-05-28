@@ -54,5 +54,5 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
     const member = await guild.members.fetch(user.id)
     member.roles.add(targetRole)
-    console.log("role added")
+    console.log(`${roleName} added to ${user.username}`)
 });
