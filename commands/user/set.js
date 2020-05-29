@@ -23,6 +23,11 @@ module.exports = class SetCommand extends Command {
     }
 
     run(message, { ign }) {
+        if (message.channel.guild.id !== process.env.SERVER_ID) {
+            message.reply(`Must be on Holli's server to run`);
+            return;
+        }
+        
         addUser.run(message, `<@${message.author.id}>`, ign);
         message.reply(`
 Welcome to fuck it bw server, ${ign}!

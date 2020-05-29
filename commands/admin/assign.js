@@ -27,6 +27,11 @@ module.exports = class DatabaseAssignCommand extends Command {
     }
 
     run(message, { mentioned, ign }) {
+        if (message.channel.guild.id !== process.env.SERVER_ID) {
+            message.reply(`Must be on Holli's server to run`);
+            return;
+        }
+        
         addUser.run(message, mentioned, ign);
     }
 };

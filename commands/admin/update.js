@@ -110,7 +110,11 @@ module.exports = class UpdateCommand extends Command {
     }
 
     run(message, { mentioned }) {
-        console.log(mentioned);
+        if (message.channel.guild.id !== process.env.SERVER_ID) {
+            message.reply(`Must be on Holli's server to run`);
+            return;
+        }
+        
         let mention = mentioned.id;
 
         const query = `
