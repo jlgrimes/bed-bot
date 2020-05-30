@@ -23,11 +23,11 @@ client.on('ready', () => {
 });
 client.login(process.env.DISCORD_TOKEN);
 
-client.on('message', (message) => {
-    //...
-});
-
 client.on('messageReactionAdd', async (reaction, user) => {
+    if (message.channel.guild.id !== process.env.SERVER_ID) {
+        return;
+    }
+
 	// When we receive a reaction we check if the reaction is partial or not
 	if (reaction.partial) {
 		// If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
