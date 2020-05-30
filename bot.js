@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
+const welcomeMessage = require('./src/replies/welcome')
 
 const client = new CommandoClient({
     commandPrefix: process.env.VERSION === 'dev' ? '?' : '!',
@@ -18,10 +19,20 @@ client.registry
     .registerDefaultCommands()
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
+// client.on('message', (message) => {
+//    //console.log(message.author.id)
+//     message.author.send(welcomeMessage.generate())
+// })
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 client.login(process.env.DISCORD_TOKEN);
+
+client.on("guildMemberAdd", (member) => {
+    const message = welcomeMessage.generate();
+    member.send(message);
+});
 
 client.on('messageReactionAdd', async (reaction, user) => {
     if (message.channel.guild.id !== process.env.SERVER_ID) {
