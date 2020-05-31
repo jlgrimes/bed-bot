@@ -40,71 +40,53 @@ module.exports = class UpdateCommand extends Command {
         });
     }
 
-    addServRoles(mentionId, ign, message) {
+    async addServRoles(mentionId, ign, message) {
         mentionId = trimMention(mentionId);
+
         const guild = this.client.guilds.resolve(process.env.SERVER_ID);
+        const data = await api.getStats(ign, hive.GameTypes.BED)
 
-        api.getStats(ign, hive.GameTypes.BED).then((data) => {
-            guild.roles.fetch().then((roles) => {
-                let servKdRole = servRoles.kd.filter((kdRole) =>
-                    kdRole.range(kd(data))
-                );
-                let servKdRoleName = servKdRole[0].name;
+        const roles = await guild.roles.fetch()
+            let servKdRole = servRoles.kd.filter((kdRole) =>
+                kdRole.range(kd(data))
+            );
+            let servKdRoleName = servKdRole[0].name;
 
-                let kdRole = roles.cache.filter(
-                    (role) => role.name === servKdRoleName
-                );
-                if (kdRole.size === 0) {
-                    message.member.send(`No roles named ${name}`);
-                    return;
-                }
-                kdRole = kdRole.values().next().value;
+            let kdRole = roles.cache.filter(
+                (role) => role.name === servKdRoleName
+            );
+            if (kdRole.size === 0) {
+                message.member.send(`No roles named ${name}`);
+                return;
+            }
+            kdRole = kdRole.values().next().value;
 
-                let servWrRole = servRoles.wr.filter((wrRole) =>
-                    wrRole.range(winRate(data))
-                );
-                let servWrRoleName = servWrRole[0].name;
+            let servWrRole = servRoles.wr.filter((wrRole) =>
+                wrRole.range(winRate(data))
+            );
+            let servWrRoleName = servWrRole[0].name;
 
-                let wrRole = roles.cache.filter(
-                    (role) => role.name === servWrRoleName
-                );
-                if (wrRole.size === 0) {
-                    message.member.send(`No roles named ${name}`);
-                    return;
-                }
-                wrRole = wrRole.values().next().value;
+            let wrRole = roles.cache.filter(
+                (role) => role.name === servWrRoleName
+            );
+            if (wrRole.size === 0) {
+                message.member.send(`No roles named ${name}`);
+                return;
+            }
+            wrRole = wrRole.values().next().value;
 
-                guild.members.fetch(mentionId).then((member) => {
-                    const allServRoleNames = [
-                        ...servRoles.kd.map((role) => role.name),
-                        ...servRoles.wr.map((role) => role.name),
-                    ];
-                    const allServRoles = roles.cache.filter((role) =>
-                        allServRoleNames.includes(role.name)
-                    );
+            const member = await guild.members.fetch(mentionId)
+            const allServRoleNames = [
+                ...servRoles.kd.map((role) => role.name),
+                ...servRoles.wr.map((role) => role.name),
+            ];
+            const allServRoles = roles.cache.filter((role) =>
+                allServRoleNames.includes(role.name)
+            );
 
-                    member.roles
-                        .remove(allServRoles)
-                        .catch((err) =>
-                            console.log(
-                                `remove: ${err}
-                                try to removed: ${allServRoleNames.reduce(
-                                    (s, t) => s + t
-                                )}
-                                `
-                            )
-                        )
-                        .then(() => {
-                            member.roles
-                                .add([wrRole, kdRole])
-                                .catch((err) => console.log(err))
-                                .then(() =>
-                                    console.log(`Roles ${servWrRoleName} and ${servKdRoleName} added for ${member.user.username}`)
-                                );
-                        });
-                });
-            });
-        });
+            await member.roles.remove(allServRoles);
+            await member.roles.add([wrRole, kdRole]);
+            message.reply(`Roles ${servWrRoleName} and ${servKdRoleName} added for ${member.user.username}`)
     }
 
     async run(message, { mentioned }) {
@@ -123,7 +105,7 @@ module.exports = class UpdateCommand extends Command {
         try {
             const res = await client.query(query);
             const ign = res.rows[0].ign;
-            this.addServRoles(mention, ign, message);
+            await this.addServRoles(mention, ign, message);
         } finally {
             client.release();
         }

@@ -43,7 +43,6 @@ module.exports = class UpdateAllCommand extends Command {
                 await u.addServRoles(row.username, row.ign, message);
             }
         } finally {
-            message.reply('All roles updated!');
             client.release();
         }
     }
