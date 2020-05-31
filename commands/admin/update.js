@@ -56,7 +56,7 @@ module.exports = class UpdateCommand extends Command {
                 (role) => role.name === servKdRoleName
             );
             if (kdRole.size === 0) {
-                message.member.send(`No roles named ${name}`);
+                message.member.send(`No roles named ${servKdRoleName}`);
                 return;
             }
             kdRole = kdRole.values().next().value;
@@ -70,7 +70,7 @@ module.exports = class UpdateCommand extends Command {
                 (role) => role.name === servWrRoleName
             );
             if (wrRole.size === 0) {
-                message.member.send(`No roles named ${name}`);
+                message.member.send(`No roles named ${servKdRoleName}`);
                 return;
             }
             wrRole = wrRole.values().next().value;
