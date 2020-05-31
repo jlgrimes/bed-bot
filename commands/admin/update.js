@@ -86,7 +86,7 @@ module.exports = class UpdateCommand extends Command {
 
             await member.roles.remove(allServRoles);
             await member.roles.add([wrRole, kdRole]);
-            message.reply(`Roles ${servWrRoleName} and ${servKdRoleName} added for ${member.user.username}`)
+            message.member.send(`Roles ${servWrRoleName} and ${servKdRoleName} added for ${member.user.username}`)
     }
 
     async run(message, { mentioned }) {
