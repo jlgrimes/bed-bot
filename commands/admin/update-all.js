@@ -25,26 +25,26 @@ module.exports = class UpdateAllCommand extends Command {
         });
     }
 
-    run(message) {
+    async run(message) {
         if (message.channel.guild.id !== process.env.SERVER_ID) {
             message.reply(`Must be on Holli's server to run`);
             return;
         }
-        
+
         const query = `
         SELECT * FROM users;
         `;
 
-        pool.connect().then((client) =>
-            client.query(query, (err, res) => {
-                if (err) throw err;
-
-                console.log(res.rows);
-                for (let row of res.rows) {
-                    const u = new update(this.client);
-                    u.addServRoles(row.username, row.ign, message);
-                }
-            })
-        );
+        const client = await pool.connect();
+        try {
+            const res = await client.query(query);
+            for (let row of res.rows) {
+                const u = new update(this.client);
+                await u.addServRoles(row.username, row.ign, message);
+            }
+        } finally {
+            message.reply('All roles updated!');
+            client.release();
+        }
     }
 };

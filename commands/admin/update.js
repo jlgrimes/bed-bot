@@ -99,9 +99,7 @@ module.exports = class UpdateCommand extends Command {
                                 .add([wrRole, kdRole])
                                 .catch((err) => console.log(err))
                                 .then(() =>
-                                    message.member.send(
-                                        `Roles ${servWrRoleName} and ${servKdRoleName} added for ${member.user.username}`
-                                    )
+                                    console.log(`Roles ${servWrRoleName} and ${servKdRoleName} added for ${member.user.username}`)
                                 );
                         });
                 });
@@ -109,25 +107,25 @@ module.exports = class UpdateCommand extends Command {
         });
     }
 
-    run(message, { mentioned }) {
+    async run(message, { mentioned }) {
         if (message.channel.guild.id !== process.env.SERVER_ID) {
             message.reply(`Must be on Holli's server to run`);
             return;
         }
-        
+
         let mention = mentioned.id;
 
         const query = `
         SELECT username, ign FROM users WHERE username = '<@${mention}>';
         `;
 
-        pool.connect().then((client) =>
-            client.query(query, (err, res) => {
-                if (err) throw err;
-                console.log(res);
-                const ign = res.rows[0].ign;
-                this.addServRoles(mention, ign, message);
-            })
-        );
+        const client = await pool.connect();
+        try {
+            const res = await client.query(query);
+            const ign = res.rows[0].ign;
+            this.addServRoles(mention, ign, message);
+        } finally {
+            client.release();
+        }
     }
 };
