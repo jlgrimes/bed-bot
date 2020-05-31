@@ -46,6 +46,11 @@ module.exports = class UpdateCommand extends Command {
         const guild = this.client.guilds.resolve(process.env.SERVER_ID);
         const data = await api.getStats(ign, hive.GameTypes.BED)
 
+        if (!data.firstLogin) {
+            message.member.send(`Player ${ign} does not exist.`);
+            return;
+        }
+
         const roles = await guild.roles.fetch()
             let servKdRole = servRoles.kd.filter((kdRole) =>
                 kdRole.range(kd(data))
