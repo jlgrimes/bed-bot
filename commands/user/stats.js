@@ -37,23 +37,26 @@ module.exports = class StatsCommand extends Command {
         });
     }
 
-    getReply(data, ign, mode) {
-        return richEmbed.generate(data, ign, mode);
+    async getReply(data, ign, mode) {
+        return await richEmbed.generate(data, ign, mode);
     }
 
     async getStats(message, ign, mode) {
         try {
             const data = await api.getStats(ign, mode);
             if (!data.firstLogin) {
-                message.reply(`Player ${ign} does not exist.`);
-                return;
+                throw(`Player ${ign} does not exist.`);
             }
 
-            const reply = await this.getReply(data, ign, mode);
+            try {
+                const reply = await this.getReply(data, ign, mode);
+                message.channel.send(reply);
+            } catch (error) {
+                message.reply(`Beep boop, ${error}`);
+            }
 
-            message.channel.send(reply);
         } catch (error) {
-            console.log(error);
+            message.reply(`Beep boop, ${error}`);
         }
     }
 
