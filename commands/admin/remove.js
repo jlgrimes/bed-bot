@@ -22,7 +22,7 @@ module.exports = class DatabaseRemoveCommand extends Command {
     }
 
     run(message, { mentioned }) {
-        if (message.channel.guild.id !== process.env.SERVER_ID) {
+        if (message.channel.guild && message.channel.guild.id !== process.env.SERVER_ID) {
             message.reply(`Must be on Holli's server to run`);
             return;
         }
