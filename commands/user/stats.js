@@ -49,7 +49,7 @@ module.exports = class StatsCommand extends Command {
                 return;
             }
 
-            const reply = this.getReply(data, ign, mode);
+            const reply = await this.getReply(data, ign, mode);
 
             message.channel.send(reply);
         } catch (error) {
