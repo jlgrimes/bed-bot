@@ -35,7 +35,7 @@ client.on("guildMemberAdd", (member) => {
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
-    if (message.channel.guild && message.channel.guild.id !== process.env.SERVER_ID) {
+    if (reaction.message.channel.guild && reaction.message.channel.guild.id !== process.env.SERVER_ID) {
         return;
     }
 
