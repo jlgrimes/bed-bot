@@ -1,8 +1,8 @@
 const { Command } = require('discord.js-commando');
 const api = require('../../src/stats/api');
 const { Pool } = require('pg');
-const richEmbed = require('../../src/replies/stats')
-const { modeEnum } = require('../../src/stats/helpers')
+const richEmbed = require('../../src/replies/stats');
+const { modeEnum } = require('../../src/stats/helpers');
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -45,7 +45,7 @@ module.exports = class StatsCommand extends Command {
         try {
             const data = await api.getStats(ign, mode);
             if (!data.firstLogin) {
-                throw(`Player ${ign} does not exist.`);
+                throw `Player ${ign} does not exist.`;
             }
 
             try {
@@ -54,7 +54,6 @@ module.exports = class StatsCommand extends Command {
             } catch (error) {
                 message.reply(`Beep boop, ${error}`);
             }
-
         } catch (error) {
             message.reply(`Beep boop, ${error}`);
         }
@@ -80,7 +79,7 @@ module.exports = class StatsCommand extends Command {
             }
         }
 
-        mode = modeEnum(mode)
+        mode = modeEnum(mode);
 
         if (selfCheck) {
             const fetchUserQuery = `
