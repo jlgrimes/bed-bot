@@ -60,7 +60,7 @@ module.exports = class StatsCommand extends Command {
         }
     }
 
-    run(message, { mode, ign }) {
+    async run(message, { mode, ign }) {
         let selfCheck = false;
 
         // if ign is not provided (there is only 1 argument)
@@ -87,11 +87,11 @@ module.exports = class StatsCommand extends Command {
             SELECT * FROM users WHERE username='<@${message.author.id}>'
             `;
 
-            pool.connect().then((client) =>
-                client.query(fetchUserQuery).then((res) => {
-                    this.getStats(message, res.rows[0].ign, mode);
-                })
-            );
+            const client = await pool.connect();
+            const res = await client.query(fetchUserQuery);
+            await this.getStats(message, res.rows[0].ign, mode);
+
+            await client.end();
         } else {
             this.getStats(message, ign, mode);
         }
