@@ -89,6 +89,7 @@ module.exports = class StatsCommand extends Command {
 
             const client = await pool.connect();
             const res = await client.query(fetchUserQuery);
+            console.log(res);
             await this.getStats(message, res.rows[0].ign, mode);
 
             await client.end();
