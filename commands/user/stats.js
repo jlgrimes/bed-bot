@@ -87,13 +87,16 @@ module.exports = class StatsCommand extends Command {
             SELECT * FROM users WHERE username='<@${message.author.id}>'
             `;
 
-            const client = await pool.connect();
-            const res = await client.query(fetchUserQuery);
-            const ign = await res.rows[0].ign;
-            console.log(`getting stats for ${ign}`)
-            await this.getStats(message, ign, mode);
-
-            await client.end();
+            try {
+                const client = await pool.connect();
+                const res = await client.query(fetchUserQuery);
+                const ign = await res.rows[0].ign;
+                await this.getStats(message, ign, mode);
+    
+                await client.end();
+            } catch (error) {
+                message.reply(`Beep boop, ${error}`);
+            }
         } else {
             this.getStats(message, ign, mode);
         }
