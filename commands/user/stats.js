@@ -4,13 +4,6 @@ const { Pool } = require('pg');
 const richEmbed = require('../../src/replies/stats')
 const { modeEnum } = require('../../src/stats/helpers')
 
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    },
-});
-
 const gameModes = ['solo', 'solos', 'duo', 'duos', 'team', 'teams'];
 
 module.exports = class StatsCommand extends Command {
@@ -88,11 +81,17 @@ module.exports = class StatsCommand extends Command {
             `;
 
             try {
+                const pool = new Pool({
+                    connectionString: process.env.DATABASE_URL,
+                    ssl: {
+                        rejectUnauthorized: false,
+                    },
+                });
+
                 const client = await pool.connect();
                 const res = await client.query(fetchUserQuery);
                 const ign = await res.rows[0].ign;
                 await this.getStats(message, ign, mode);
-    
                 await client.end();
             } catch (error) {
                 message.reply(`Beep boop, ${error}`);
