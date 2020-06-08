@@ -7,13 +7,6 @@ const hive = require('hive-api');
 
 const { Pool } = require('pg');
 
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    },
-});
-
 // data is what is returned from bw api
 const winRate = (data) => data.victories / data.gamesPlayed;
 const kd = (data) => data.kills / data.deaths;
@@ -102,11 +95,18 @@ module.exports = class UpdateCommand extends Command {
 
         let mention = mentioned.id;
 
+        const pool = new Pool({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false,
+            },
+        });
+        const client = await pool.connect();
+
         const query = `
         SELECT username, ign FROM users WHERE username = '<@${mention}>';
         `;
 
-        const client = await pool.connect();
         try {
             const res = await client.query(query);
             const ign = res.rows[0].ign;
