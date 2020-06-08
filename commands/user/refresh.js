@@ -11,7 +11,7 @@ const pool = new Pool({
     },
 });
 
-module.exports = class SetCommand extends Command {
+module.exports = class RefreshCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'refresh',

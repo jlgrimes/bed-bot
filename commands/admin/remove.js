@@ -3,7 +3,7 @@ require('dotenv').config();
 const { Command } = require('discord.js-commando');
 const removeUser = require('../../src/db/modules/removeUser');
 
-module.exports = class DatabaseRemoveCommand extends Command {
+module.exports = class RemoveCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'remove',
