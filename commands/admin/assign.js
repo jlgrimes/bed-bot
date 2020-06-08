@@ -11,6 +11,7 @@ module.exports = class AssignCommand extends Command {
             memberName: 'assign',
             description: 'Assigns a user to an in game name.',
             userPermissions: ['ADMINISTRATOR'],
+            guildOnly: true,
             args: [
                 {
                     key: 'mentioned',
@@ -27,7 +28,7 @@ module.exports = class AssignCommand extends Command {
     }
 
     run(message, { mentioned, ign }) {
-        if (message.channel.guild && message.channel.guild.id !== process.env.SERVER_ID) {
+        if (message.channel.guild.id !== process.env.SERVER_ID) {
             message.reply(`Must be on Holli's server to run`);
             return;
         }

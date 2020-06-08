@@ -8,12 +8,13 @@ module.exports = class CountCommand extends Command {
 			group: 'admin',
             memberName: 'count',
             description: 'Counts all users in the database.',
-            userPermissions: ['ADMINISTRATOR'],
+			userPermissions: ['ADMINISTRATOR'],
+			guildOnly: true,
 		});
 	}
 
 	run(message) {
-		if (message.channel.guild && message.channel.guild.id !== process.env.SERVER_ID) {
+		if (message.channel.guild.id !== process.env.SERVER_ID) {
             message.reply(`Must be on Holli's server to run`);
             return;
 		}

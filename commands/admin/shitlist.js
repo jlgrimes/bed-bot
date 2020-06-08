@@ -8,12 +8,13 @@ module.exports = class ShitListCommand extends Command {
 			group: 'admin',
             memberName: 'shitlist',
             description: 'Makes a shitlist of everyone who has not run !set.',
-            userPermissions: ['ADMINISTRATOR'],
+			userPermissions: ['ADMINISTRATOR'],
+			guildOnly: true,
 		});
 	}
 
 	run(message) {
-		if (message.channel.guild && message.channel.guild.id !== process.env.SERVER_ID) {
+		if (message.channel.guild.id !== process.env.SERVER_ID) {
             message.reply(`Must be on Holli's server to run`);
             return;
 		}

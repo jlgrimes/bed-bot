@@ -23,15 +23,11 @@ module.exports = class RefreshCommand extends Command {
     }
 
     run(message) {
-        if (message.channel.guild && message.channel.guild.id !== process.env.SERVER_ID) {
+        if (message.channel.guild.id !== process.env.SERVER_ID) {
             message.reply(`Must be on Holli's server to run`);
             return;
         }
-        
-        if (message.channel.type === 'dm') {
-            message.reply('Must run this command in the server.');
-            return;
-        }
+
         const fetchUserQuery = `
 		SELECT * FROM users WHERE username='<@${message.author.id}>'
 		`;
