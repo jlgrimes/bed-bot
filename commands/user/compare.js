@@ -3,7 +3,7 @@ const api = require('../../src/stats/api');
 const { lastLogin, wr, kd } = require('../../src/stats/helpers');
 const { compareLine } = require('../../src/stats/print');
 const hive = require('hive-api');
-
+const richEmbed = require('../../src/replies/compare')
 module.exports = class CompareCommand extends Command {
     constructor(client) {
         super(client, {
@@ -26,7 +26,8 @@ module.exports = class CompareCommand extends Command {
         });
     }
 
-    getReply(data1, data2, ign1, ign2) {
+    async getReply(data1, data2, ign1, ign2) {
+        return await richEmbed.generate(data1, data2, ign1, ign2);
         const formattedData = [
             ['Comparing', ign1, ign2],
             ['', '', ''],
@@ -50,31 +51,29 @@ ${formattedData
 \`\`\``;
     }
 
-    compare(message, ign1, ign2) {
-        api.getStats(ign1, hive.GameTypes.BED)
-            .catch((err) => console.log(err))
-            .then((data1) => {
-                // if the user never logged in, aka they're invalid
-                if (!data1.firstLogin) {
-                    message.channel.send(`Player ${ign1} does not exist.`);
-                    return;
-                }
+    async compare(message, ign1, ign2) {
+        try {
+            const data1 = await api.getStats(ign1, hive.GameTypes.BED);
+            if (!data1.firstLogin) {
+                message.channel.send(`Player ${ign1} does not exist.`);
+                return;
+            }
 
-                api.getStats(ign2, hive.GameTypes.BED)
-                    .catch((err) => console.log(err))
-                    .then((data2) => {
-                        if (!data2.firstLogin) {
-                            message.channel.send(`Player ${ign2} does not exist.`);
-                            return;
-                        }
+           const data2 = await api.getStats(ign2, hive.GameTypes.BED)
+           if (!data2.firstLogin) {
+                message.channel.send(`Player ${ign2} does not exist.`);
+                return;
+            }
 
-                        const reply = this.getReply(data1, data2, ign1, ign2);
-                        message.channel.send(reply);
-                    });
-            });
+            const reply = await this.getReply(data1, data2, ign1, ign2);
+            message.channel.send(reply);
+
+        } catch (err) {
+            console.log(err)
+        }
     }
 
-    run(message, { ign1, ign2 }) {
+    async run(message, { ign1, ign2 }) {
         this.compare(message, ign1, ign2);
     }
 };
