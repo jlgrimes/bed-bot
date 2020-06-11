@@ -10,7 +10,7 @@ const { getColor } = require('../styles/colors');
 const crafatarApi = (uuid) => `https://crafatar.com/avatars/${uuid}.png`;
 
 const getThumbnail = async (image1, image2) => {
-    image1.scan(
+    await image1.scan(
         0,
         0,
         image1.bitmap.width,
@@ -23,7 +23,7 @@ const getThumbnail = async (image1, image2) => {
         }
     );
 
-    const buffer = image1.getBufferAsync(Jimp.AUTO);
+    const buffer = await image1.getBufferAsync(Jimp.AUTO);
     return buffer;
 };
 
@@ -40,9 +40,6 @@ ${data1.winStreak} vs ${data2.winStreak} win streak
 
         const image1 = await Jimp.read(crafatarApi(uuid1));
         const image2 = await Jimp.read(crafatarApi(uuid2));
-
-        const color1 = ColorThief.getColor(image1);
-        const color2 = ColorThief.getColor(image2);
 
         let thumbnail = await getThumbnail(image1, image2);
         const file = new Discord.MessageAttachment(thumbnail, 'thumb.png');
