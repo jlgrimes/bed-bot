@@ -6,6 +6,7 @@ const welcomeMessage = require('./src/replies/welcome');
 
 const client = new CommandoClient({
     commandPrefix: process.env.VERSION === 'dev' ? '?' : '!',
+    unknownCommandResponse: false,
     owner: '265515383773986817',
 });
 
@@ -16,7 +17,7 @@ client.registry
         ['user', 'User'],
     ])
     .registerDefaultGroups()
-    .registerDefaultCommands()
+    .registerDefaultCommands({ unknownCommand: false })
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
 // client.on('message', (message) => {
