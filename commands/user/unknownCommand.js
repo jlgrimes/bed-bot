@@ -18,6 +18,9 @@ module.exports = class UnknownCommandCommand extends Command {
         if (msg.author.id === '483421168234266625') {
             return msg.reply('stfu lexi');
         }
+        if (msg.author.id === '494548750929494017') {
+            return msg.reply('Unknown command. ur such a great person don\'t thing anything different about yourself :)')
+        }
         return msg.reply(
             `Unknown command. Use ${msg.anyUsage(
                 'help',
