@@ -66,7 +66,7 @@ ${data1.winStreak} vs ${data2.winStreak} win streak
                         name: 'Game Stats',
                         value: `
 ${data1.victories} vs ${data2.victories} Victories
-${data1.gamesPlayed} vs ${data2.victories} Games Played
+${data1.gamesPlayed} vs ${data2.gamesPlayed} Games Played
 ${wr(data1)} vs ${wr(data2)} Win Rate
 ${data1.bedsDestroyed} vs ${data2.bedsDestroyed} Beds Destroyed
 ${data1.teamsEliminated} vs ${data2.teamsEliminated} Teams Eliminated
