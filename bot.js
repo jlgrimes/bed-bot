@@ -5,7 +5,7 @@ const path = require('path');
 const welcomeMessage = require('./src/replies/welcome');
 
 const client = new CommandoClient({
-    commandPrefix: process.env.VERSION === 'dev' ? '?' : '!',
+    commandPrefix: process.env.VERSION === 'dev' ? '?' : 'bed',
     unknownCommandResponse: false,
     owner: '265515383773986817',
 });
