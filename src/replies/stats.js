@@ -3,7 +3,7 @@ const { lastLogin, wr, kd } = require('../stats/helpers');
 const { getUuid, getPlayerUrl } = require('../stats/api');
 const { getColor } = require('../styles/colors')
 
-const crafatarApi = (uuid) => `https://crafatar.com/avatars/${uuid}.png`;
+const crafatarApi = (uuid) => `https://crafatar.com/renders/head/${uuid}.png`;
 
 module.exports = {
     generate: async (data, ign, mode) => {
