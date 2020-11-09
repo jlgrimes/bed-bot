@@ -1,7 +1,5 @@
 # bed bot
 
-Bot for Holli's Bed Wars server. Built with NodeJS + love <3
-
 ## User Commands
 
 * **[ign]** refers to your in-game-name for Minecraft
@@ -14,7 +12,7 @@ Sets your ign to **[ign]** in the database.
 !set [ign]
 ```
 ```
-Welcome to fuck it, bw server, [ign]!
+Welcome to bw server, [ign]!
 Your in game name has been successfully registered.
 ```
 
@@ -122,7 +120,6 @@ Lists all the users in the database.
 ```
 ```
 @j_lancelott SitOnMeYoshiko
-@Purpzuki HolliDoesntSit
 ...
 ```
 
